@@ -35,9 +35,9 @@ class WorldTrade:
         def dl_intraday(self, ticker, interval_of_data, range_of_data):
             """Download the data into a json format from world trade
 
-            :param ticker: ticker of stock of interest
-            :param interval_of_data: interval to download (i.e. 5 mins, 15 mins, 10 mins)
-            :param range_of_data: range of data to download, max is 30 days
+            :param ticker:(str) ticker of stock of interest
+            :param interval_of_data:(int) interval to download (i.e. 5 mins, 15 mins, 10 mins)
+            :param range_of_data:(int) range of data to download, max is 30 days
             """
             self.url = f'https://intraday.worldtradingdata.com/api/v1/intraday?symbol={ticker}\
             &range={str(range_of_data)}&interval={str(interval_of_data)}&api_token={self.api_key}'
