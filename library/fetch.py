@@ -20,24 +20,34 @@ class WorldTrade:
         pass
 
     class Intraday:
-        """API for intraday function of world trading data"""
+        """API for intraday function of world trading data
 
+        Args:
+            :arg intraday_attrs (list): list of the attributes that get returned from world trade
+            :arg raw_intra_data (json): the raw file without any processing from world trade data
+            :arg dates (list): list of dt.date for current raw file
+            :arg times (list): list of dt.time for current raw file
+            :arg df_dict (dict): Intraday field for raw data, converted into df {volume:df, high:df...}
+            :arg url (str): url used
+            :arg api_key (str): api key for world trade
+        """
         intraday_attrs = ['high', 'low', 'close', 'open', 'volume']
 
-        def __init__(self, api_key):
-            self.raw_intra_data = None  # Raw json data downloaded from world trading data
-            self.dates = []  # All dates for current raw file
-            self.times = []  # All times for current raw file
-            self.df_dict = {}  # intraday field of raw data containing df from json {volume:df, high:df...}
-            self.url = None  # Full url used to download
-            self.api_key = api_key  # key for account
+        def __init__(self, api_key: str):
+            self.raw_intra_data = None
+            self.dates = []
+            self.times = []
+            self.df_dict = {}
+            self.url = None
+            self.api_key = api_key
 
-        def dl_intraday(self, ticker, interval_of_data, range_of_data):
+        def dl_intraday(self, ticker: str, interval_of_data: int, range_of_data: int):
             """Download the data into a json format from world trade
 
-            :param ticker:(str) ticker of stock of interest
-            :param interval_of_data:(int) interval to download (i.e. 5 mins, 15 mins, 10 mins)
-            :param range_of_data:(int) range of data to download, max is 30 days
+            Parameters:
+                :param ticker:(str) ticker of stock of interest
+                :param interval_of_data:(int) interval to download (i.e. 5 mins, 15 mins, 10 mins)
+                :param range_of_data:(int) range of data to download, max is 30 days
             """
             self.url = f'https://intraday.worldtradingdata.com/api/v1/intraday?symbol={ticker}\
             &range={str(range_of_data)}&interval={str(interval_of_data)}&api_token={self.api_key}'
@@ -98,8 +108,18 @@ class WorldTrade:
 
 
 class EarningsCalendar:
-    """Earnings date information scraped from yahoo finance"""
+    """Earnings date information scraped from yahoo finance
 
+    Args:
+        :arg DELAY (int): delay between traversing pages
+        :arg CALL_TIME_DICT (dict): translate yahoo lingo into shortened
+        :arg date (str): date of interest
+        :arg earnings (dict): the final output of the class. A dictionary of all earnings for that date
+        :arg url (str): url to yahoo
+        :arg offset (int): offset used in the url
+        :arg num_stocks (int): number of stocks on current day
+        :arg num_pages (int): not useful, mainly used for convenience, number of pages on yahoo
+    """
     DELAY = 0.5  # delay in seconds between url calls
     CALL_TIME_DICT = {
         'Time Not Supplied': 'N/A',
@@ -108,22 +128,17 @@ class EarningsCalendar:
         'TAS': 'N/A'
     }
 
-    def __init__(self, date):
-        self.date = date.strftime('%Y-%m-%d')  # date of interest
-        self.earnings = {'date': self.date, 'tickers': {}}  # Earnings list
-        self.url = None  # url to yahoo
-        self._soup = None  # html soup from beautiful soup
-        self.offset = 0  # offset to be used in the url
-        self.num_stocks = 0  # number of stocks that has earnings scheduled on date
-        self.num_pages = 0  # number of pages of data there are, usually
+    def __init__(self, date: object):
+        self.date = date.strftime('%Y-%m-%d')
+        self.earnings = {'date': self.date, 'tickers': {}}
+        self.url = None
+        self._soup = None
+        self.offset = 0
+        self.num_stocks = 0
+        self.num_pages = 0
         self.run()
 
     def getsoup(self):
-        """returns soup in html format.
-
-        The entire class shares a single soup variable, and gets constantly updated.
-        self._soup should be not used outside of these functions, mainly used for easy implementation within class
-        """
         self.url = f'https://finance.yahoo.com/calendar/earnings?day={self.date}&offset={self.offset}&size=100'
         yahoo = requests.get(self.url)
         if yahoo.status_code != 200:
@@ -141,7 +156,7 @@ class EarningsCalendar:
 
     def filter_data(self):
         """Filters soup data and returns dict {ticker: BMO, ticker2: AMC, etc...}"""
-        
+
         # Results white and results_alt are due to the fact that yahoo chart splits into grey and white
         # gets all the soup data from white lines
         results_white = self._soup.findAll('tr', {
@@ -183,5 +198,39 @@ class EarningsCalendar:
             save.dump(self.earnings, save, indent=indent)
 
 
+class FindSector:
+    """ Get Sector information courtesy of Zach's
+
+    Args:
+        :arg sector (str): is the sector according to Zach's
+        :arg industry (str): is the industry according to Zach's
+        :arg HEADERS (dict): is cause Zach is a lil bitch and doesnt like scraping
+    """
+    HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                             'Chrome/79.0.3945.130 Safari/537.36'}
+
+    def __init__(self, ticker: str):
+        self.url = 'https://www.zacks.com/stock/quote/' + ticker
+        self.sector = None
+        self.industry = None
+        self._soup = None
+        self.getsoup()
+        self._filter()
+
+    def getsoup(self):
+        data = requests.get(self.url, headers=self.HEADERS)
+        if data.status_code != 200:
+            raise ConnectionError(f'code {data.status_code}')
+        src = data.content
+        self._soup = BeautifulSoup(src, 'html.parser')
+
+    def _filter(self):
+        results = self._soup.find_all('table', {'class': 'abut_top'})
+        for result in results:
+            self.sector = result.find_all('a')[0].text
+            self.industry = result.find_all('a')[1].text
+
+
 if __name__ == '__main__':
-    WorldTrade.Intraday('qwe').dl_intraday('123', 14, 14)
+    earnings = EarningsCalendar()
+
