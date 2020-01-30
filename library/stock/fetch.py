@@ -3,13 +3,16 @@ import json
 import datetime as dt
 import pandas as pd
 import numpy as np
-import time as py_time
 from bs4 import BeautifulSoup
 
-"""
-fetch.py is a module for getting/ connecting to internet and grabbing data.
-Any and all programs/methods that involve connecting to the internet/ another 3rd party
-provider will be done through fetch.py.
+"""API hub for stock.py
+fetch.py inside stock package is meant to be a directory for all stock related api 
+third party interactions. Meant to be easily exported into another program instead
+of constantly being tied to the earnings package as well.
+
+Class:
+    WorldTrade: api for world trade
+    ZachsApi: api for Zachs
 """
 
 
@@ -107,103 +110,13 @@ class WorldTrade:
             return rebuilt
 
 
-class EarningsCalendar:
-    """Earnings date information scraped from yahoo finance
-
-    Args:
-        :arg DELAY (int): delay between traversing pages
-        :arg CALL_TIME_DICT (dict): translate yahoo lingo into shortened
-        :arg date (str): date of interest
-        :arg earnings (dict): the final output of the class. A dictionary of all earnings for that date
-        :arg url (str): url to yahoo
-        :arg offset (int): offset used in the url
-        :arg num_stocks (int): number of stocks on current day
-        :arg num_pages (int): not useful, mainly used for convenience, number of pages on yahoo
-    """
-    DELAY = 0.5  # delay in seconds between url calls
-    CALL_TIME_DICT = {
-        'Time Not Supplied': 'N/A',
-        'Before Market Open': 'BMO',
-        'After Market Close': 'AMC',
-        'TAS': 'N/A'
-    }
-
-    def __init__(self, date: object):
-        self.date = date.strftime('%Y-%m-%d')
-        self.earnings = {'date': self.date, 'tickers': {}}
-        self.url = None
-        self._soup = None
-        self.offset = 0
-        self.num_stocks = 0
-        self.num_pages = 0
-        self.run()
-
-    def getsoup(self):
-        self.url = f'https://finance.yahoo.com/calendar/earnings?day={self.date}&offset={self.offset}&size=100'
-        yahoo = requests.get(self.url)
-        if yahoo.status_code != 200:
-            raise ConnectionError(f'code {yahoo.status_code}')
-        src = yahoo.content
-        self._soup = BeautifulSoup(src, 'html.parser')
-
-    def pages(self):
-        """gets number of pages and stocks that exists on the yahoo site"""
-
-        self.getsoup()  # get soup to extract data
-        results = self._soup.find('span', {'class': 'Mstart(15px) Fw(500) Fz(s)'}).text
-        self.num_stocks = int(results[results.index('of') + 3: -len('results')])
-        self.num_pages = int((self.num_stocks - 1) / 100)
-
-    def filter_data(self):
-        """Filters soup data and returns dict {ticker: BMO, ticker2: AMC, etc...}"""
-
-        # Results white and results_alt are due to the fact that yahoo chart splits into grey and white
-        # gets all the soup data from white lines
-        results_white = self._soup.findAll('tr', {
-            'class': 'simpTblRow Bgc($extraLightBlue):h BdB Bdbc($finLightGrayAlt) Bdbc($tableBorderBlue):h H(32px) '
-                     'Bgc(white)'})
-
-        # gets all the soup data from alternate (grey) lines
-        results_alt = self._soup.findAll('tr', {
-            'class': 'simpTblRow Bgc($extraLightBlue):h BdB Bdbc($finLightGrayAlt) Bdbc($tableBorderBlue):h H(32px) '
-                     'Bgc($altRowColor)'})
-
-        # filters results_white data into the main dict
-        for i in results_white:
-            ticker = i.find('a', {'class', 'Fw(600)'}).text
-            time = i.find('td', {'class', 'Va(m) Ta(end) Pstart(15px) W(20%) Fz(s)'}).text
-            time = self.CALL_TIME_DICT[time]
-            self.earnings['tickers'][ticker] = time
-
-        # filters results_alt data into the main dict
-        for i in results_alt:
-            ticker = i.find('a', {'class', 'Fw(600)'}).text
-            time = i.find('td', {'class', 'Va(m) Ta(end) Pstart(15px) W(20%) Fz(s)'}).text
-            time = self.CALL_TIME_DICT[time]
-            self.earnings['tickers'][ticker] = time
-
-    def run(self):
-        """Bread and budder, generates the earnings list"""
-
-        self.pages()
-        self.filter_data()
-        for i in range(1, self.num_pages + 1):
-            py_time.sleep(self.DELAY)
-            self.offset = 100 * i
-            self.getsoup()
-            self.filter_data()
-
-    def save_as_json(self, path, indent=4):
-        with open(path, 'wb') as save:
-            save.dump(self.earnings, save, indent=indent)
-
-
-class FindSector:
+class ZachsApi:
     """ Get Sector information courtesy of Zach's
 
     Args:
         :arg sector (str): is the sector according to Zach's
         :arg industry (str): is the industry according to Zach's
+        :arg stock_activity (int): Zach's stock activity chart in dict form
         :arg HEADERS (dict): is cause Zach is a lil bitch and doesnt like scraping
     """
     HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -214,8 +127,13 @@ class FindSector:
         self.sector = None
         self.industry = None
         self._soup = None
+        self.stock_activity = {}
+        self._run()
+
+    def _run(self):
         self.getsoup()
-        self._filter()
+        self._filter_sector()
+        self._filter_stock_activity()
 
     def getsoup(self):
         data = requests.get(self.url, headers=self.HEADERS)
@@ -224,13 +142,17 @@ class FindSector:
         src = data.content
         self._soup = BeautifulSoup(src, 'html.parser')
 
-    def _filter(self):
+    def _filter_sector(self):
+        """get the ticker sector and industry information"""
+
         results = self._soup.find_all('table', {'class': 'abut_top'})
         for result in results:
             self.sector = result.find_all('a')[0].text
             self.industry = result.find_all('a')[1].text
 
+    def _filter_stock_activity(self):
+        """Get the ticker all important stock information located under stock activity from zachs"""
 
-if __name__ == '__main__':
-    earnings = EarningsCalendar()
-
+        results = self._soup.find('section', {'id': 'stock_activity'}).find_all('td')
+        for i in range(0, len(results) - 1, 2):
+            self.stock_activity[results[i].text] = results[i + 1].text
