@@ -28,8 +28,8 @@ class WorldTrade:
         Args:
             :arg intraday_attrs (list): list of the attributes that get returned from world trade
             :arg raw_intra_data (json): the raw file without any processing from world trade data
-            :arg dates (list): list of dt.date for current raw file
-            :arg times (list): list of dt.time for current raw file
+            :arg dates (list): list of dt.date for current raw file. Are in datetime format
+            :arg times (list): list of dt.time for current raw file Are in datetime format
             :arg df_dict (dict): Intraday field for raw data, converted into df {volume:df, high:df...}
             :arg url (str): url used
             :arg api_key (str): api key for world trade
@@ -66,14 +66,18 @@ class WorldTrade:
                 json.dump(self.raw_intra_data, save, indent=indent)
 
         def to_dataframe(self):
+            """Raw json price data to intraday dict
+
+            Converts data under intraday key to a dictionary of DataFrames, filling in any missing values with np.nan.
+            {attr: df, attr2: df, attr3: df...}
+            :return df_dict
             """
-            Converts data under intraday key to a dictionary of DataFrames, filling in any missing values with np.nan
-            """
+            self._find_index_col()
             keys = self._rebuild_key()
             for attr in self.intraday_attrs:
                 data = []
                 for key in keys:
-                    data.append(self._return_intraday(key))
+                    data.append(self._return_intraday(key, attr))
 
                 np_data = np.array(data).reshape([len(self.dates), len(self.times)])
                 self.df_dict[attr] = pd.DataFrame(data=np_data, index=self.dates, columns=self.times)
@@ -90,11 +94,11 @@ class WorldTrade:
             self.dates = list(sorted(set(self.dates)))
             self.times = list(sorted(set(self.times)))
 
-        def _return_intraday(self, key):
-            intraday = self.raw_intra_data
+        def _return_intraday(self, key, attr):
+            intraday = self.raw_intra_data['intraday']
             # Try except used for performance gains
             try:
-                return intraday[key]
+                return intraday[key][attr]
             except KeyError:
                 return np.nan
 
@@ -118,9 +122,13 @@ class ZachsApi:
         :arg industry (str): is the industry according to Zach's
         :arg stock_activity (int): Zach's stock activity chart in dict form
         :arg HEADERS (dict): is cause Zach is a lil bitch and doesnt like scraping
+        :arg _convert_dict (dict): convert to a more usable dictionary key set
     """
     HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                              'Chrome/79.0.3945.130 Safari/537.36'}
+    _convert_dict = {'Open': 'open', 'Day Low': 'day_low', 'Day High': 'day_high', '52 Wk Low': '52_wk_low',
+                     '52 Wk High': '52_wk_high', 'Avg. Volume': 'avg_volume', 'Market Cap': 'market_cap',
+                     'Dividend': 'dividend', 'Beta': 'beta'}
 
     def __init__(self, ticker: str):
         self.url = 'https://www.zacks.com/stock/quote/' + ticker
@@ -155,4 +163,12 @@ class ZachsApi:
 
         results = self._soup.find('section', {'id': 'stock_activity'}).find_all('td')
         for i in range(0, len(results) - 1, 2):
-            self.stock_activity[results[i].text] = results[i + 1].text
+            key = self._convert_dict[results[i].text]
+            self.stock_activity[key] = results[i + 1].text
+
+
+if __name__ == '__main__':
+    wt = WorldTrade.Intraday('bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF')
+    wt.dl_intraday('NVDA', 5, 30)
+    wt.to_dataframe()
+    print(wt.df_dict)
