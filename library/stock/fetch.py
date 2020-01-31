@@ -75,10 +75,7 @@ class WorldTrade:
             self._find_index_col()
             keys = self._rebuild_key()
             for attr in self.intraday_attrs:
-                data = []
-                for key in keys:
-                    data.append(self._return_intraday(key, attr))
-
+                data = [self._return_intraday(key, attr) for key in keys]
                 np_data = np.array(data).reshape([len(self.dates), len(self.times)])
                 self.df_dict[attr] = pd.DataFrame(data=np_data, index=self.dates, columns=self.times)
             return self.df_dict
@@ -107,10 +104,8 @@ class WorldTrade:
             The raw data is missing time data for certain days due to missing data/ holidays cause stock market
             to close early. Rebuilding the key along with _return_intraday will fill missing time data with np.nan.
             """
-            rebuilt = []
-            for date in self.dates:
-                for time in self.times:
-                    rebuilt.append(dt.datetime.combine(date, time).strftime('%Y-%m-%d %H:%M:%S'))
+            rebuilt = [dt.datetime.combine(date, time).strftime('%Y-%m-%d %H:%M:%S')
+                       for date in self.dates for time in self.times]
             return rebuilt
 
 

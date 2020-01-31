@@ -125,3 +125,4 @@ if __name__ == '__main__':
     print(nvda.market_cap)
     print(nvda.market)
     print(nvda.industry)
+    print(nvda.close)
