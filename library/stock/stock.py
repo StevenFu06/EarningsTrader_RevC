@@ -1,6 +1,8 @@
 from library.stock import fetch
 import datetime as dt
 import pandas as pd
+import warnings
+import json
 import pymongo as db
 import os
 
@@ -23,7 +25,7 @@ class Stock:
 
     Parameter:
         :param ticker (str): ticker of interest
-        :param load_from: load method, from mongo, json, fetch, update etc... Interacts with _load_method
+        :param load_method: load method, from mongo, json, fetch, update etc... Interacts with _load_method
     """
 
     INTRADAY = [
@@ -55,12 +57,11 @@ class Stock:
         'NYSEAMERICAN': '^NYA'
     }
 
-    def __init__(self, ticker: str, load_from, **kwargs):
-        self.load_from = load_from
+    def __init__(self, ticker: str, load_method, **kwargs):
         self.ticker = ticker
-        self._load_method(**kwargs)
+        self._parse_load_method(load_method, **kwargs)
 
-    def _load_method(self, **kwargs):
+    def _parse_load_method(self, load_method, **kwargs):
         """Automatically select load method including fetch and updating
 
         Options:
@@ -73,8 +74,8 @@ class Stock:
             update:
                 Will update the existing attributes and add new ones if any are none
         """
-
-        if self.load_from == 'fetch':
+        if load_method == 'fetch':
+            self.load_method = load_method
             self._fetch_from_wt(kwargs.get('api_key'), kwargs.get('interval_of_data'), kwargs.get('range_of_data'))
             self._fetch_from_zachs()
 
@@ -102,7 +103,6 @@ class Stock:
 
         Will set HISTORICAL parameters, sector and industry
         """
-
         zachs = fetch.ZachsApi(self.ticker)
         for i in self.HISTORICAL:
             # Note index is datetime format
@@ -113,16 +113,44 @@ class Stock:
         self.sector = zachs.sector
         self.industry = zachs.industry
 
+    def save(self, save_loc_or_buff=None):
+        """Saves current instance. Default save location is the load_method"""
+
+        if save_loc_or_buff is None:  # Default save location
+            save_loc_or_buff = self.load_method
+
+        if save_loc_or_buff is 'fetch':
+            warnings.formatwarning = lambda message, category, filename, lineno, file=None, line=None: \
+                f'{filename}:{lineno}\n{category.__name__}: {message}\n'
+            warnings.warn('Cannot save to fetch, save request ignored')
+
+        # if save_location is 'database':
+
+    def to_dict(self):
+        all_attrs = ['ticker'] + self.INFO + self.HISTORICAL + self.INTRADAY
+        stock_as_dict = {key: getattr(self, key) for key in all_attrs}
+        return stock_as_dict
+
+    def to_json(self, path_or_buff=None):
+        df_attrs = self.HISTORICAL + self.INTRADAY
+        stock_as_json = {key: json.dumps(getattr(self, key)) for key in ['ticker'] + self.INFO}
+        stock_as_json.update({key: getattr(self, key).to_json(orient='split') for key in df_attrs})
+        return stock_as_json
+
+    # def read_json(self, buffer):
+
 
 if __name__ == '__main__':
     nvda = Stock('NVDA', 'fetch',
                  api_key='bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF',
-                 interval_of_data=5,
-                 range_of_data=4)
-    test = '2020-01-30'
+                 interval_of_data=5)
+    test12 = '2020-01-30'
     date_test = dt.date(2020, 1, 30)
-    print(nvda.market_cap.loc[dt.datetime.now().date()])
-    print(nvda.market_cap)
-    print(nvda.market)
-    print(nvda.industry)
-    print(nvda.close)
+    json_data = nvda.to_json()
+    nvda.save()
+    print(json_data)
+    import time
+    with open('test.json', 'w') as write:
+        nvda.close.to_json(write)
+    # test = pd.read_json(json_data['close'], orient='split')
+    #     # test.columns = [i.time() for i in test.columns]
