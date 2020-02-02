@@ -95,7 +95,7 @@ class WorldTrade:
             intraday = self.raw_intra_data['intraday']
             # Try except used for performance gains
             try:
-                return intraday[key][attr]
+                return float(intraday[key][attr])
             except KeyError:
                 return np.nan
 
@@ -159,7 +159,22 @@ class ZachsApi:
         results = self._soup.find('section', {'id': 'stock_activity'}).find_all('td')
         for i in range(0, len(results) - 1, 2):
             key = self._convert_dict[results[i].text]
-            self.stock_activity[key] = results[i + 1].text
+            self.stock_activity[key] = text_to_num(results[i + 1].text)
+
+
+def text_to_num(text):
+    """Converts text to number"""
+
+    #  For that one dumbass avg volume field which uses , instead of spaces
+    text = text.replace(',', '')
+    if ')' in text:
+        return text[text.index('(')+2:-1]  # for dividend where the format was 0.X ( 0.X%) which is stupid
+    d = {'M': 6,'B': 9}
+    if text[-1] in d:
+        num, magnitude = text[:-1], text[-1]
+        return float(num) * 10 ** d[magnitude]
+    else:
+        return float(text)
 
 
 if __name__ == '__main__':

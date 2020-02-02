@@ -31,7 +31,7 @@ class EarningsCalendar:
         'Time Not Supplied': 'N/A',
         'Before Market Open': 'BMO',
         'After Market Close': 'AMC',
-        'TAS': 'N/A'
+        'TAS': 'AMC'
     }
 
     def __init__(self, date: object):

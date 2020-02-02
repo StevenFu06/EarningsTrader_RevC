@@ -1,4 +1,9 @@
 import os
+import datetime as dt
+from library.stock.stock import Stock
+from library.earnings import  EarningsCalendar
+from concurrent.futures import ThreadPoolExecutor
 
-test_path = 'test.json'
-print(test_path[-5:] == '.json')
+earnings = EarningsCalendar(dt.date(2020, 1, 29))
+print(earnings.earnings)
+print(earnings.num_stocks)
