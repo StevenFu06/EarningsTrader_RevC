@@ -1,6 +1,9 @@
 import requests
 import time as py_time
 from bs4 import BeautifulSoup
+import datetime as dt
+import pandas as pd
+import json
 
 
 """
@@ -8,12 +11,13 @@ earnings.py for all your earning needs. Includes the fetch.py module which was o
 separated.
 
 Class: 
-    EarningsCalendar: Yahoo earnings calendar api
     Earnings: meant to be the main api to interact with all the scraped data
+    YahooEarningsCalendar: Yahoo earnings calendar api. Returns ticker+time only... yahoo sucks
+    ZachsEarningsCalendar: Earnings calendar from zachs... Thank god for zachs
 """
 
 
-class EarningsCalendar:
+class YahooEarningsCalendar:
     """Earnings date information scraped from yahoo finance
 
     Args:
@@ -101,4 +105,58 @@ class EarningsCalendar:
 
     def save_as_json(self, path, indent=4):
         with open(path, 'wb') as save:
-            save.dump(self.earnings, save, indent=indent)
+            json.dump(self.earnings, save, indent=indent)
+
+
+class ZachsEarningsCalendar:
+    """Zachs Earnings Calendar
+
+    Args:
+        :arg raw_data: raw data from zachs as a dict
+        :arg earnings: earnings data from zachs as a dataframe
+        :arg timestampe: timespamp of the input dated
+        :arg date: current date
+        :arg url: url to the data
+    """
+    HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                             'Chrome/79.0.3945.130 Safari/537.36'}
+
+    def __init__(self, date: dt.date):
+        self.raw_data = None
+        self.date = date
+        self.earnings = None
+        # dt.time(1,0) is the time zachs wants for the url. NOTE **1AM IS EST TIME**
+        self.timestamp = int(dt.datetime.combine(date, dt.time(1, 0)).timestamp())
+        self.url = 'https://www.zacks.com/includes/classes/z2_class_calendarfunctions_data.php?calltype='\
+                   f'eventscal&date={self.timestamp}&type=1'
+        self.get_earnings()
+
+    def get_earnings(self):
+        """Gets and returns the data from zachs earnings calendar"""
+
+        def parse_eps(text):  # EPS may not exist so cant always be a float
+            try:
+                return float(text)
+            except ValueError:
+                return text
+
+        # Get raw data as dict
+        data = requests.get(self.url, headers=self.HEADERS)
+        if data.status_code != 200:
+            raise ConnectionError(f'code {data.status_code}')
+        soup = BeautifulSoup(data.content, 'html.parser')
+        self.raw_data = json.loads(soup.text)['data']
+
+        # To dataframe
+        to_frame = {i[0]: {
+            'time': i[3],
+            'estimate': parse_eps(i[4]),
+            'reported': parse_eps(i[5])
+        } for i in self.raw_data}
+        self.earnings = pd.DataFrame.from_dict(to_frame, orient='index')
+
+
+if __name__ == '__main__':
+    zachs = ZachsEarningsCalendar(dt.date(2020, 2, 4))
+    zachs.get_earnings()
+    print(zachs.earnings)

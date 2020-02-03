@@ -3,8 +3,9 @@ import datetime as dt
 import pandas as pd
 import warnings
 import json
-import pymongo as db
+from bson import ObjectId
 import os
+
 
 """Main stock module 
 Interacts with erryting basically, a life saver, one stop shop for all stock data
@@ -36,7 +37,6 @@ class Stock:
         :param ticker (str): ticker of interest
         :param interval_of_data (int): if data is loaded, returns the interval of intraday columns headers
     """
-
     INTRADAY = [
         'open',
         'close',
@@ -76,7 +76,7 @@ class Stock:
         for intra in self.INTRADAY:
             setattr(self, intra, pd.DataFrame())
 
-    def fetch(self, api_key: str, interval_of_data: int = None, range_of_data=30):
+    def fetch(self, api_key: str, interval_of_data: int = None, range_of_data=30, zachs=True, world_trade=True):
         """Fetch from api (Wt and zachs)
 
         If nothing prior loaded, it will populate all attributes, will update attributes if
@@ -85,8 +85,10 @@ class Stock:
         :param api_key: api key for world trade
         :param interval_of_data: how often the data is. Available every 1, 5, 15, or 60
         :param range_of_data: Default is 30 days, but 30 days is not available for 1 minute (7 days)
+        :param zachs: if false will ignore fetch from zachs
+        :param world_trade: if false will ignore fetch from world trade data
         """
-        # Error and warning for imporper interval_of_data
+        # Error and warning for improper interval_of_data
         if self.interval_of_data is not None:  # Test if nothing is loaded
             if interval_of_data is None:  # Default value
                 interval_of_data = self.interval_of_data
@@ -97,9 +99,10 @@ class Stock:
         # Raise error if its a new stock and no interval is given
         elif interval_of_data is None:
             raise TypeError('"interval_of_data" must be specified if nothing is loaded')
-
-        self._fetch_from_wt(api_key, interval_of_data, range_of_data)
-        self._fetch_from_zachs()
+        if world_trade:
+            self._fetch_from_wt(api_key, interval_of_data, range_of_data)
+        if zachs:
+            self._fetch_from_zachs()
 
     def get_data_interval(self):
         """returns the time interval in minutes between column headers"""
@@ -113,7 +116,6 @@ class Stock:
 
         Will set INTRADAY parameters and market. Refer to fetch for more detail.
         """
-
         wt = fetch.WorldTrade.Intraday(api_key)
         wt.dl_intraday(self.ticker, interval_of_data, range_of_data)
         self.market = self.MARKET_DICT[wt.raw_intra_data['stock_exchange_short']]
@@ -148,13 +150,13 @@ class Stock:
     def to_json(self, path_or_buff=None):
         """Instance to json
 
-        Will return a dict with pandas object parsed into json with orient='split'.
-        If path_or_buff not supplied, will return a json string
+        Will return a dict with pandas object parsed into json with orient='split' if path or buff not given.
+        If path_or_buff given, the dictionary will be saved automatically
 
         :param path_or_buff: will save to path or buffer if supplied.
         """
         df_attrs = self.HISTORICAL + self.INTRADAY
-        stock_as_json = {key: json.dumps(getattr(self, key)) for key in ['ticker'] + self.INFO}
+        stock_as_json = {key: getattr(self, key) for key in ['ticker'] + self.INFO}
         stock_as_json.update({
             key: getattr(self, key).to_json(
                 orient='split',
@@ -175,7 +177,7 @@ class Stock:
                 return
             except PermissionError:
                 raise FileNotFoundError('invalid file path')
-        return json.dumps(stock_as_json)
+        return stock_as_json
 
     def read_json(self, path_or_buff: json):
         """Load a stock to_json serialized json file/ dictionary
@@ -210,7 +212,7 @@ class Stock:
                 serial_json[i],
                 orient='split',
                 typ='series',
-                convert_dates=False # Prevents data from being converted into datetime
+                convert_dates=False  # Prevents data from being converted into datetime
             )
             # convert to proper datetime format
             temp_series.index = [idx.date() for idx in temp_series.index]
@@ -266,6 +268,48 @@ class Stock:
         ]
         if auto_populate:
             self._fetch_from_zachs()
+
+    def to_mongo(self, collection, object_id: str = None):
+        """Saves to mongo collection specified
+
+        Duplicates will be handled and correct errors will be raised
+
+        Parameters:
+            :param collection: pymongo database collection object
+            :param object_id: string ID, will be parsed into ObjectID automatically
+        """
+        # Error handeling
+        num_results = len(list(collection.find({'ticker': self.ticker})))
+        if object_id is None and num_results > 1:
+            raise FileExistsError('Repeat ticker found, ObjectID required')
+        # serialize object
+        elif object_id is not None:
+            collection.replace_one({'_id': ObjectId(object_id)}, self.to_json(), upsert=True)
+        else:
+            collection.replace_one({'ticker': self.ticker}, self.to_json(), upsert=True)
+
+    def read_mongo(self, collection, object_id: str = None):
+        """Read from mongo collection
+
+        Duplicates will be handled and correct errors will be raised
+
+        Parameters:
+            :param collection: pymongo database collection object
+            :param object_id: string ID, will be parsed into ObjectID automatically
+        """
+        # Error handeling
+        num_results = len(list(collection.find({'ticker': self.ticker})))
+        if num_results == 0:
+            raise FileNotFoundError('Stock ticker not found, make sure ticker is all cap')
+        if object_id is None and num_results > 1:
+            raise FileExistsError('Repeat ticker found, ObjectID required')
+        # Load object
+        elif object_id is not None:
+            json_data = collection.find_one({'_id': ObjectId(object_id)})
+        else:
+            json_data = collection.find_one({'ticker': self.ticker})
+        json_data.pop('_id')  # Because mongo has an extra _id tag
+        self.read_json(json_data)
 
 
 if __name__ == '__main__':
