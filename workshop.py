@@ -1,6 +1,8 @@
 import os
 import datetime as dt
 from library.stock.stock import Stock
+from library.stock.fetch import WorldTrade, ZachsApi
+from library.database import Updater
 from library.earnings import YahooEarningsCalendar
 from concurrent.futures import ThreadPoolExecutor
 import numpy as np
@@ -19,4 +21,6 @@ cluster = db.MongoClient('mongodb+srv://desktop:hipeople1S@main-ojil5.azure.mong
 database = cluster['main']
 collection = database['15 min interval']
 key = 'bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF'
-stocks = os.listdir(revc_path)
+
+update = Updater(key)
+update.get_sample_data(15)

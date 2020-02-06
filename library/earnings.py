@@ -5,7 +5,6 @@ import datetime as dt
 import pandas as pd
 import json
 
-
 """
 earnings.py for all your earning needs. Includes the fetch.py module which was originally
 separated.
@@ -20,15 +19,15 @@ Class:
 class YahooEarningsCalendar:
     """Earnings date information scraped from yahoo finance
 
-    Args:
-        :arg DELAY (int): delay between traversing pages
-        :arg CALL_TIME_DICT (dict): translate yahoo lingo into shortened
-        :arg date (str): date of interest
-        :arg earnings (dict): the final output of the class. A dictionary of all earnings for that date
-        :arg url (str): url to yahoo
-        :arg offset (int): offset used in the url
-        :arg num_stocks (int): number of stocks on current day
-        :arg num_pages (int): not useful, mainly used for convenience, number of pages on yahoo
+    Attributes:
+        DELAY (int): delay between traversing pages
+        CALL_TIME_DICT (dict): translate yahoo lingo into shortened
+        date (str): date of interest
+        earnings (dict): the final output of the class. A dictionary of all earnings for that date
+        url (str): url to yahoo
+        offset (int): offset used in the url
+        num_stocks (int): number of stocks on current day
+        num_pages (int): not useful, mainly used for convenience, number of pages on yahoo
     """
     DELAY = 0.5  # delay in seconds between url calls
     CALL_TIME_DICT = {
@@ -111,12 +110,12 @@ class YahooEarningsCalendar:
 class ZachsEarningsCalendar:
     """Zachs Earnings Calendar
 
-    Args:
-        :arg raw_data: raw data from zachs as a dict
-        :arg earnings: earnings data from zachs as a dataframe
-        :arg timestampe: timespamp of the input dated
-        :arg date: current date
-        :arg url: url to the data
+    Attributes:
+        raw_data: raw data from zachs as a dict
+        earnings: earnings data from zachs as a dataframe
+        timestamp: timespamp of the input dated
+        date: current date
+        url: url to the data
     """
     HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                              'Chrome/79.0.3945.130 Safari/537.36'}

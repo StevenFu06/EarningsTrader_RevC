@@ -6,7 +6,6 @@ import json
 from bson import ObjectId
 import os
 
-
 """Main stock module 
 Interacts with erryting basically, a life saver, one stop shop for all stock data
 """
@@ -28,10 +27,10 @@ class Stock:
         will restore to both dataframes and series.
 
     Attributes:
-        :arg INTRADAY (list): Attributes for wt.intraday attributes. Data type of dataframe
-        :arg INFO (list): includes misc data for stocks/ single point entry that doesnt change based on date
-        :arg HISTORICAL (list): any attributes that change based on date that needs to be tracked
-        :arg MARKET_DICT (dict): convert market names to market tickers for consistency
+        INTRADAY (list): Attributes for wt.intraday attributes. Data type of dataframe
+        INFO (list): includes misc data for stocks/ single point entry that doesnt change based on date
+        HISTORICAL (list): any attributes that change based on date that needs to be tracked
+        MARKET_DICT (dict): convert market names to market tickers for consistency
 
     Parameter:
         :param ticker (str): ticker of interest
@@ -112,19 +111,21 @@ class Stock:
         self.interval_of_data = int(interval.seconds/60)
 
     def _fetch_from_wt(self, api_key: str, interval_of_data: int, range_of_data=30):
-        """Fetches data from world trade data, using fetch.py api
+        """Fetches data from world trade data, using fetch.py api"""
 
-        Will set INTRADAY parameters and market. Refer to fetch for more detail.
-        """
-        wt = fetch.WorldTrade.Intraday(api_key)
-        wt.dl_intraday(self.ticker, interval_of_data, range_of_data)
-        self.market = self.MARKET_DICT[wt.raw_intra_data['stock_exchange_short']]
+        wt = fetch.WorldTrade.Intraday()
+        wt.dl_intraday(self.ticker, api_key, interval_of_data, range_of_data)
+        self._load_from_wt(wt)
 
-        wt.to_dataframe()  # wt.df_dict has dataframe already converted to datetime
+    def _load_from_wt(self, worldtrade):
+        """Converts WorlTrade.Intraday obj into stock (self) obj"""""
+
+        worldtrade.to_dataframe()  # wt.df_dict has dataframe already converted to datetime
+        self.market = self.MARKET_DICT[worldtrade.raw_intra_data['stock_exchange_short']]
         for i in self.INTRADAY:
             setattr(
                 self, i,
-                pd.concat([getattr(self, i), wt.df_dict[i]], axis=0).drop_duplicates()
+                pd.concat([getattr(self, i), worldtrade.df_dict[i]], axis=0).drop_duplicates()
             )
 
     def _fetch_from_zachs(self):
@@ -173,7 +174,8 @@ class Stock:
             except AttributeError:
                 pass
             try:
-                json.dump(stock_as_json, open(path_or_buff, 'w'))
+                with open(path_or_buff, 'w') as save:
+                    json.dump(stock_as_json, save)
                 return
             except PermissionError:
                 raise FileNotFoundError('invalid file path')
@@ -188,7 +190,8 @@ class Stock:
             serial_json = json.load(path_or_buff)
         except AttributeError:
             try:
-                serial_json = json.load(open(path_or_buff, 'r'))
+                with open(path_or_buff, 'r') as read:
+                    serial_json = json.load(read)
             except TypeError:
                 try:
                     serial_json = json.loads(path_or_buff)
@@ -259,7 +262,7 @@ class Stock:
             temp_df.index = [idx.date() for idx in temp_df.index]  # ensure datetime properly parsed
             setattr(self, attr, temp_df)
         self.get_data_interval()
-
+        # Because I was stupid and didn't save as tickers, conversion needs to be done
         self.market = self.MARKET_DICT[
             pd.read_csv(
                 filepath_or_buffer=f'{path}\\database.csv',

@@ -1,8 +1,9 @@
-import requests
-import json
 import datetime as dt
-import pandas as pd
+import json
+
 import numpy as np
+import pandas as pd
+import requests
 from bs4 import BeautifulSoup
 
 """API hub for stock.py
@@ -25,45 +26,70 @@ class WorldTrade:
     class Intraday:
         """API for intraday function of world trading data
 
-        Args:
-            :arg intraday_attrs (list): list of the attributes that get returned from world trade
-            :arg raw_intra_data (json): the raw file without any processing from world trade data
-            :arg dates (list): list of dt.date for current raw file. Are in datetime format
-            :arg times (list): list of dt.time for current raw file Are in datetime format
-            :arg df_dict (dict): Intraday field for raw data, converted into df {volume:df, high:df...}
-            :arg url (str): url used
-            :arg api_key (str): api key for world trade
+        Attributes:
+            intraday_attrs (list): list of the attributes that get returned from world trade
+            URL (str): the url to to the worldtrade intraday api
+            raw_intra_data (json): the raw file without any processing from world trade data
+            dates (list): list of dt.date for current raw file. Are in datetime format
+            times (list): list of dt.time for current raw file Are in datetime format
+            df_dict (dict): Intraday field for raw data, converted into df {volume:df, high:df...}
         """
         intraday_attrs = ['high', 'low', 'close', 'open', 'volume']
+        URL = 'https://intraday.worldtradingdata.com/api/v1/intraday?symbol={ticker}' \
+              '&range={range_of_data}&interval={interval_of_data}&api_token={api_key}'
 
-        def __init__(self, api_key: str):
+        def __init__(self):
             self.raw_intra_data = None
             self.dates = []
             self.times = []
             self.df_dict = {}
-            self.url = None
-            self.api_key = api_key
 
-        def dl_intraday(self, ticker: str, interval_of_data: int, range_of_data: int):
+        def dl_intraday(
+                self,
+                ticker: str,
+                api_key: str,
+                interval_of_data: int,
+                range_of_data: int,
+                surpress_message=False
+        ):
             """Download the data into a json format from world trade
 
             Parameters:
-                :param ticker:(str) ticker of stock of interest
-                :param interval_of_data:(int) interval to download (i.e. 5 mins, 15 mins, 10 mins)
-                :param range_of_data:(int) range of data to download, max is 30 days
+                :param ticker: ticker of stock of interest
+                :param api_key: api key for world trading data
+                :param interval_of_data: interval to download (i.e. 5 mins, 15 mins, 10 mins)
+                :param range_of_data: range of data to download, max is 30 days
+                :param surpress_message: supress the downloading message
             """
-            self.url = f'https://intraday.worldtradingdata.com/api/v1/intraday?symbol={ticker}\
-            &range={str(range_of_data)}&interval={str(interval_of_data)}&api_token={self.api_key}'
+            if not surpress_message:  # Mainly for debugging purposes
+                print(f'Downloading {ticker} from World Trading Data...')
 
-            data = requests.get(self.url)
+            url = self.URL.format(
+                ticker=ticker,
+                range_of_data=range_of_data,
+                interval_of_data=interval_of_data,
+                api_key=api_key
+            )
+            data = requests.get(url)
             if data.status_code != 200:
                 raise ConnectionError(f'code {data.status_code}')
             self.raw_intra_data = data.json()
-            return self.raw_intra_data
+            try:  # Check to see if the ticker was found, and intraday data is available
+                self.raw_intra_data['intraday']
+            except KeyError:
+                raise FileNotFoundError(self.raw_intra_data)
 
-        def save_as_json(self, path, indent=4):
+        def raw_to_json(self, path, indent=4):
+            """Save raw intra data to json"""
+
             with open(path, 'w') as save:
                 json.dump(self.raw_intra_data, save, indent=indent)
+
+        def read_raw_json(self, path):
+            """Load raw_intra_data from file instead of world trade"""
+
+            with open(path, 'r') as read:
+                self.raw_intra_data = json.load(read)
 
         def to_dataframe(self):
             """Raw json price data to intraday dict
@@ -112,12 +138,14 @@ class WorldTrade:
 class ZachsApi:
     """ Get Sector information courtesy of Zach's
 
-    Args:
-        :arg sector (str): is the sector according to Zach's
-        :arg industry (str): is the industry according to Zach's
-        :arg stock_activity (int): Zach's stock activity chart in dict form
-        :arg HEADERS (dict): is cause Zach is a lil bitch and doesnt like scraping
-        :arg _convert_dict (dict): convert to a more usable dictionary key set
+    Attributes:
+        sector (str): is the sector according to Zach's
+        industry (str): is the industry according to Zach's
+        stock_activity (int): Zach's stock activity chart in dict form
+        HEADERS (dict): is cause Zach is a lil bitch and doesnt like scraping
+         _convert_dict (dict): convert to a more usable dictionary key set
+        ticker: ticker to be downloaded
+        suppress: setting on whether or not downloading message will be surpressed
     """
     HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                              'Chrome/79.0.3945.130 Safari/537.36'}
@@ -125,20 +153,31 @@ class ZachsApi:
                      '52 Wk High': '52_wk_high', 'Avg. Volume': 'avg_volume', 'Market Cap': 'market_cap',
                      'Dividend': 'dividend', 'Beta': 'beta'}
 
-    def __init__(self, ticker: str):
+    def __init__(self, ticker: str, surpress_message=False):
         self.url = 'https://www.zacks.com/stock/quote/' + ticker
         self.sector = None
         self.industry = None
         self._soup = None
         self.stock_activity = {}
+        self.ticker = ticker
+        self.suppress = surpress_message
         self._run()
 
     def _run(self):
+        """Calls functions to populate attributes"""
+
+        if not self.suppress:  # Mainly for debugging purposes
+            print(f'Downloading {self.ticker} from Zachs...')
         self.getsoup()
-        self._filter_sector()
-        self._filter_stock_activity()
+        try:
+            self._filter_sector()
+            self._filter_stock_activity()
+        except AttributeError:
+            raise FileNotFoundError('Stock not found')
 
     def getsoup(self):
+        """Fetches data from zachs"""
+
         data = requests.get(self.url, headers=self.HEADERS)
         if data.status_code != 200:
             raise ConnectionError(f'code {data.status_code}')
@@ -179,7 +218,7 @@ class ZachsApi:
 
 
 if __name__ == '__main__':
-    wt = WorldTrade.Intraday('bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF')
-    wt.dl_intraday('NVDA', 5, 30)
+    wt = WorldTrade.Intraday()
+    wt.dl_intraday('NVDA', 'bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF', 5, 30)
     wt.to_dataframe()
     print(wt.df_dict)
