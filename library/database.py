@@ -5,6 +5,11 @@ import os
 
 """Database management module
 
+Note:
+    This module will deal EXCLUSIVELY with handling of the stock database, earnings and other will be 
+    handled by their respective classes/ modules. For example, if a stock is blacklisted, earnings.py will
+    deal with missing stocks/ blacklisted stocks appropriately. 
+
 Class:
     Updater: updates the given database including error checking when fetching data
     cleanup: clean/ error checks the existing database 
@@ -29,12 +34,12 @@ class Updater:
         api_key (str): api key for world trade data
         range_of_data (int): range of data to be collected
         incomplete_handler (str): method of how incomplete data should be handeled
-        expected_num_dates, times, nan (int) : generated from calling sample stocks and is criteria used to filter
-        incomplete stocks
+        expected_num_dates, times, nan (int) : generated from calling sample stocks and is the criteria
+        used to filter incomplete stocks
     """
     SAMPLE_TICKERS = ['NVDA', 'AMD', 'TSLA', 'AAPL']
 
-    def __init__(self, api_key: str, range_of_data: int = 30, incomplete_handler: str = 'delete', **kwargs):
+    def __init__(self, api_key: str, range_of_data: int = 30, incomplete_handler: str = 'ignore', **kwargs):
         self.api_key = api_key
         self.range_of_data = range_of_data
         self.handler = incomplete_handler
@@ -60,7 +65,7 @@ class Updater:
             wt.to_dataframe()
             return len(wt.dates), len(wt.times), wt.df_dict['close'].isna().sum().sum()
 
-        # Set the expected_num attributes
+        # Calculate and set the expected_num attributes
         with ThreadPoolExecutor() as executor:
             for results in executor.map(num_data_points, self.SAMPLE_TICKERS):
                 for i in range(len(attrs)):
