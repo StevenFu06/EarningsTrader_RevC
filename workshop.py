@@ -16,7 +16,7 @@ def ticker_path(ticker):
 
 revb_path = 'E:\\Libraries\\Documents\\Stock Assistant\\EarningsTrader_RevB\\data\\'
 revc_path = 'E:\\Libraries\\Documents\\Stock Assistant\\database\\15 min interval\\'
-cluster = db.MongoClient('mongodb+srv://desktop:hipeople1S@main-ojil5.azure.mongodb.net'
+cluster = db.MongoClient('mongodb+srv://desktop:<password>@main-ojil5.azure.mongodb.net'
                          '/test?retryWrites=true&w=majority')
 database = cluster['main']
 collection = database['15 min interval']
