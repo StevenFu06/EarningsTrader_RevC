@@ -20,6 +20,8 @@ class Stock:
         BIG Note. Using iloc with slicing is inclusive of start but not end for some reason.
         Using loc with slicing is fully inclusive
 
+        When stock is mentioned it means stock obj when ticker is mentioned it means the str
+
     Read:
         All read functions (exceptions for legacy) will load all attributes with interval_of_data.
         Interval_of_data is not stored but is calculated on read call. All ready functions automatically parse

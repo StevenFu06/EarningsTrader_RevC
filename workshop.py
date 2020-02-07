@@ -22,5 +22,6 @@ database = cluster['main']
 collection = database['15 min interval']
 key = 'bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF'
 
-update = Updater(key)
-update.get_sample_data(15)
+update = Updater(key, incomplete_handler='raise')
+update.download(['12311', 'NVDA','AAPL', 12], 15)
+

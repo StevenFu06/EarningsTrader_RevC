@@ -50,7 +50,7 @@ class WorldTrade:
                 api_key: str,
                 interval_of_data: int,
                 range_of_data: int,
-                surpress_message=False
+                surpress_message: bool = False
         ):
             """Download the data into a json format from world trade
 
