@@ -2,7 +2,6 @@ from library.stock.stock import Stock
 from library.stock.fetch import WorldTrade, ZachsApi
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from itertools import repeat
-
 import os
 
 """Database management module
@@ -91,7 +90,7 @@ class Updater:
                 self.threashold += self._calculate_threshold(result)
             self.threashold = self.threashold/len(self.SAMPLE_TICKERS)
 
-    def download(self, tickers: list, interval_of_data: int):
+    def download_raw(self, tickers: list, interval_of_data: int):
         self.get_sample_data(interval_of_data)
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             results = {
@@ -105,13 +104,59 @@ class Updater:
                     if self._calculate_threshold(wt) >= self.threashold or self.handler == 'ignore':
                         self.downloaded[ticker] = wt
                     else:
-                        self._incomeplete(ticker)
+                        self._incomplete(ticker)
                 except FileNotFoundError:
-                    self._incomeplete(ticker)
+                    self._incomplete(ticker)
                     continue
 
-    def _incomeplete(self, ticker):
+    def download_json(self, json_dir: str):
+        """Update all stocks saved within the directory of type json
+
+        Note:
+            max_workers parameter will be multiplied by 3 due to each spawning a 3 child process:
+            1. download from worldtrade
+            2. download from zachs
+            3. get stock object from the dir
+
+        :param json_dir: the directory where all the json serialized stock objects are kept
+        """
+        tickers = os.listdir(json_dir)
+
+        def get_stock(ticker):
+            stock = Stock(ticker)
+            stock.read_json(os.path.join(json_dir, ticker))
+            return stock
+
+        interval_of_data = get_stock(tickers[0]).interval_of_data
+
+        def child_thread(ticker):
+            with ThreadPoolExecutor(max_workers=3) as sub:
+                results = {
+                    'stock': sub.submit(get_stock, ticker).result(),
+                    'wt': sub.submit(self._fetch_wt, ticker, interval_of_data).result(),
+                    'zachs': sub.submit(ZachsApi, ticker).result()
+                }
+            try:
+                self.process_results(results).to_json(os.path.join(json_dir, ticker))
+            except FileNotFoundError:
+                return self._incomplete(results)
+
+        with ThreadPoolExecutor(max_workers=self.max_workers) as main:
+            with ThreadPoolExecutor(max_workers=3) as sub:
+                sub.submit(self._fetch_wt, ticker, interval_of_data)
+
+    def process_results(self, results):
+        if self._calculate_threshold(results['wt']) < self.threashold:
+            raise FileNotFoundError
+        else:
+            results['stock'] = results['stock']._load_from_wt(results['wt'])
+            results['stock'] = results['stock']._load_from_zachs(results['zachs'])
+            return results['stock']
+
+    def _incomplete(self, results):
         if self.handler == 'do_nothing':
+            pass
+        elif self.handler == 'ignore':
             pass
         elif self.handler == 'blacklist':
             self.blacklist.append(ticker)

@@ -93,13 +93,17 @@ class Stock:
         if self.interval_of_data is not None:  # Test if nothing is loaded
             if interval_of_data is None:  # Default value
                 interval_of_data = self.interval_of_data
-            # If data is being updated, and check if intervals match
+
+            # If data is being updated, then check if intervals match
             elif interval_of_data is not None and interval_of_data != self.interval_of_data:
                 warnings.formatwarning = lambda msg, *args: f'{msg}\n'
                 warnings.warn('Given interval does not match loaded interval!')
+
         # Raise error if its a new stock and no interval is given
         elif interval_of_data is None:
             raise TypeError('"interval_of_data" must be specified if nothing is loaded')
+
+        # Call fetch functions and load in correct parameters
         if world_trade:
             self._fetch_from_wt(api_key, interval_of_data, range_of_data)
         if zachs:
@@ -133,9 +137,16 @@ class Stock:
     def _fetch_from_zachs(self):
         """Fetches data from zachs using fetch.ZachsApi
 
-        Will set HISTORICAL parameters, sector and industry
+        mainly used for multithreading loading
         """
         zachs = fetch.ZachsApi(self.ticker)
+        self._load_from_zachs(zachs)
+
+    def _load_from_zachs(self, zachs):
+        """Will set HISTORICAL parameters, sector and industry
+
+        :param zachs: fetch.ZachsApi object
+        """
         for i in self.HISTORICAL:
             # Note index is datetime format
             df_zachs = pd.Series(

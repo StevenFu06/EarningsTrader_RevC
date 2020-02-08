@@ -22,6 +22,27 @@ database = cluster['main']
 collection = database['15 min interval']
 key = 'bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF'
 
-update = Updater(key, incomplete_handler='raise')
-update.download(['12311', 'NVDA','AAPL', 12], 15)
+# update = Updater(key, 30)
+# update.download_json('E:\\Libraries\\Documents\\Stock Assistant\\database\\15 min interval\\')
 
+def test(arg):
+    print('test')
+    return list(range(arg))
+def error():
+    raise Exception
+def sub(arg):
+    with ThreadPoolExecutor() as executor:
+        results = {
+            'test1': executor.submit(test, arg),
+            'test2': executor.submit(test, arg),
+            'test3': executor.submit(test, error())
+        }
+    return results
+
+with ThreadPoolExecutor() as executor:
+    results = {
+        'test1': executor.submit(test, error()),
+        'test2': executor.submit(test, 3),
+        'test3': executor.submit(test, 3)
+    }
+print(results['test1'])
