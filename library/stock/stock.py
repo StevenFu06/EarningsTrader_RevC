@@ -108,6 +108,7 @@ class Stock:
             self._fetch_from_wt(api_key, interval_of_data, range_of_data)
         if zachs:
             self._fetch_from_zachs()
+        return self
 
     def get_data_interval(self):
         """returns the time interval in minutes between column headers"""
@@ -119,7 +120,7 @@ class Stock:
     def _fetch_from_wt(self, api_key: str, interval_of_data: int, range_of_data=30):
         """Fetches data from world trade data, using fetch.py api"""
 
-        wt = fetch.WorldTrade.Intraday()
+        wt = fetch.Intraday()
         wt.dl_intraday(self.ticker, api_key, interval_of_data, range_of_data)
         self._load_from_wt(wt)
 
@@ -236,6 +237,7 @@ class Stock:
 
         for i in self.INFO:
             setattr(self, i, serial_json[i])
+        return self
 
     def to_legacy_csv(self, path: str):
         """Save to legacy csv, aka rev B data
@@ -284,6 +286,7 @@ class Stock:
         ]
         if auto_populate:
             self._fetch_from_zachs()
+        return self
 
     def to_mongo(self, collection, object_id: str = None):
         """Saves to mongo collection specified
@@ -326,6 +329,7 @@ class Stock:
             json_data = collection.find_one({'ticker': self.ticker})
         json_data.pop('_id')  # Because mongo has an extra _id tag
         self.read_json(json_data)
+        return self
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 from library.stock.stock import Stock
-from library.stock.fetch import WorldTrade, ZachsApi
+from library.stock.fetch import ZachsApi, Intraday
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from itertools import repeat
 import os
@@ -12,153 +12,122 @@ Note:
     deal with missing stocks/ blacklisted stocks appropriately. 
 
 Class:
-    Updater: updates the given database including error checking when fetching data
-    cleanup: clean/ error checks the existing database 
-    change: changes 1 form of database to another?
+    JsonManager: Deals with the management of the local json database. 
+        - Updater: updates and filters out incomplete data
+        - Clenaer: Cleans the database of incomplete files/ corrupted data
 """
 
 
-class Updater:
-    """Updates and error checks the given database
+def calculate_threshold(wt: Intraday):
+    return len(wt.dates) + len(wt.times) + wt.df_dict['close'].isna().sum().sum()
 
-    Note:
-        First downloads from api then checks for error based on SAMPLE_TICKERS that are given/ default. Any
-        that do not match the threashold will be handeld based on 'incomplete_handler' mode. Any errors that
-        occur, i.e. world trade doesnt have a ticker, will also be handled by incomplete_handler
 
-    Incomplete modes:
-        delete: deletes the stock from database
-        blacklist: adds the stock to a blacklist saved somewhere. If a list not given, ticker will be appened
-        to an an empty list.
-        move: move incomplete stocks to a different folder. If mongo, another collection needs to be given
-        ignore: ignore incomplete stocks and continue as if they were compelete
-        do_nothing: different from ignore, will skip the stock entirely, pretend it doesn't exist
-        raise_exception: raise exception on finding incomplete stock
-
-    Attributes:
-        api_key (str): api key for world trade data
-        range_of_data (int): range of data to be collected
-        incomplete_handler (str): method of how incomplete data should be handeled
-        threashold (float): threashold from sample stocks. If not met stock will be considered incomplete
-        max_workers (int)(optional): maximum workers allowed for ThreadPoolExecutor
-        blacklist (list)(optional): a literal blacklist in **LIST** type. If not given, and mode is blacklist
-        blacklisted stock will be appened an empty array
-
-    Parameters:
-        :param api_key: api for world trade
-        :param incomplete_handler: how incomplete files will be handled
-        :param range_of_data: range of data to download, more information on fetch.py
-        :param interval_of_data: time between data points
-        :param wt: short for World Trade Intraday object
-    """
+class JsonManager:
     SAMPLE_TICKERS = ['NVDA', 'AMD', 'TSLA', 'AAPL']
 
-    def __init__(self, api_key: str, range_of_data: int = 30, incomplete_handler: str = 'ignore', **kwargs):
-        self.api_key = api_key
-        self.range_of_data = range_of_data
-        self.handler = incomplete_handler
-        self.all_stocks = None
-        self.threashold = 0
-        self.downloaded = {}
-        self._kwarg_options(kwargs)
+    def __init__(self, path_to_database: str, **kwargs):
+        # Main variables
+        self.dir_path = path_to_database
+        self.threshold = None
+        self._is_valid()
+        self._kwarg_setter(**kwargs)
 
-    def _kwarg_options(self, kwargs):
+    def _kwarg_setter(self, kwargs):
         self.max_workers = kwargs.pop('max_workers', None)
+
+        # Worldtrade api data
+        self.api_key = kwargs.pop('api_key', None)
+        self.range_of_data = kwargs.pop('range_of_data', 30)
+        self.surpress_message = kwargs.pop('surpress_message', False)
+
+        # For error checking
         self.blacklist = kwargs.pop('blacklist', [])
+        self.incomplete_handler = kwargs.pop('incomplete_handler', 'blacklist_only')
+        self.move_to = kwargs.pop('move_to', None)
 
-    @staticmethod
-    def _calculate_threshold(wt: WorldTrade.Intraday):
-        return len(wt.dates) + len(wt.times) + wt.df_dict['close'].isna().sum().sum()
+    def _is_valid(self):
+        try:
+            self.all_stocks = [ticker[:-5] for ticker in os.listdir(self.dir_path)]
+            validate = Stock(self.all_stocks[0])
+            validate.read_json(self.path_builder(self.all_stocks[0]))
+            self.interval_of_data = validate.interval_of_data
+        except FileNotFoundError:
+            raise FileNotFoundError('Database was invalid, local databases only')
 
-    def _fetch_wt(self, ticker: str, interval_of_data: int):
-        """Download the data from world trade"""
+    def path_builder(self, ticker):
+        """Returns built ticker path using given database location"""
 
-        wt = WorldTrade.Intraday()
-        wt.dl_intraday(ticker, self.api_key, interval_of_data, self.range_of_data)
-        wt.to_dataframe()
+        return os.path.join(self.dir_path, ticker + '.json')
+
+    def fetch_wt(self, ticker):
+        wt = Intraday().dl_intraday(
+            ticker,
+            self.api_key,
+            self.interval_of_data,
+            self.range_of_data,
+            surpress_message=self.surpress_message
+        )
         return wt
 
-    def get_sample_data(self, interval_of_data):
+    def get_sample_data(self):
         """Populate the expected num attributes by using sample tickers
-
         Needs to be run before all updates unless incomplete stocks are being ignored. Generates threashold
         to evaulate incomplete stocks.
         """
-        # Create repeated interval_of_data for pool.map function
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            for result in executor.map(self._fetch_wt, self.SAMPLE_TICKERS, repeat(interval_of_data)):
-                self.threashold += self._calculate_threshold(result)
-            self.threashold = self.threashold/len(self.SAMPLE_TICKERS)
+            for wt in executor.map(self.fetch_wt, self.all_stocks):
+                self.threshold += calculate_threshold(wt)
+            self.threshold = self.threshold/len(self.SAMPLE_TICKERS)
 
-    def download_raw(self, tickers: list, interval_of_data: int):
-        self.get_sample_data(interval_of_data)
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            results = {
-                executor.submit(self._fetch_wt, ticker, interval_of_data): ticker
-                for ticker in tickers
-            }
-            for future in as_completed(results):
-                ticker = results[future]
-                try:
-                    wt = future.result()
-                    if self._calculate_threshold(wt) >= self.threashold or self.handler == 'ignore':
-                        self.downloaded[ticker] = wt
-                    else:
-                        self._incomplete(ticker)
-                except FileNotFoundError:
-                    self._incomplete(ticker)
-                    continue
+    def update(self):
+        self.get_sample_data()
+        for ticker in self.all_stocks:
+            wt = self.fetch_wt(ticker)
+            if calculate_threshold(wt) < self.threshold:
+                self.handler(ticker, wt)
+            else:
+                temp_stock = Stock(ticker).read_json(self.path_builder(ticker))
+                temp_stock._load_from_wt(wt)
+                temp_stock._load_from_zachs(ZachsApi(ticker))
+                temp_stock.to_json(self.path_builder(ticker))
 
-    def download_json(self, json_dir: str):
-        """Update all stocks saved within the directory of type json
-
-        Note:
-            max_workers parameter will be multiplied by 3 due to each spawning a 3 child process:
-            1. download from worldtrade
-            2. download from zachs
-            3. get stock object from the dir
-
-        :param json_dir: the directory where all the json serialized stock objects are kept
-        """
-        tickers = os.listdir(json_dir)
-
-        def get_stock(ticker):
-            stock = Stock(ticker)
-            stock.read_json(os.path.join(json_dir, ticker))
-            return stock
-
-        interval_of_data = get_stock(tickers[0]).interval_of_data
-
-        def child_thread(ticker):
-            with ThreadPoolExecutor(max_workers=3) as sub:
-                results = {
-                    'stock': sub.submit(get_stock, ticker).result(),
-                    'wt': sub.submit(self._fetch_wt, ticker, interval_of_data).result(),
-                    'zachs': sub.submit(ZachsApi, ticker).result()
-                }
-            try:
-                self.process_results(results).to_json(os.path.join(json_dir, ticker))
-            except FileNotFoundError:
-                return self._incomplete(results)
-
-        with ThreadPoolExecutor(max_workers=self.max_workers) as main:
-            with ThreadPoolExecutor(max_workers=3) as sub:
-                sub.submit(self._fetch_wt, ticker, interval_of_data)
-
-    def process_results(self, results):
-        if self._calculate_threshold(results['wt']) < self.threashold:
-            raise FileNotFoundError
-        else:
-            results['stock'] = results['stock']._load_from_wt(results['wt'])
-            results['stock'] = results['stock']._load_from_zachs(results['zachs'])
-            return results['stock']
-
-    def _incomplete(self, results):
-        if self.handler == 'do_nothing':
+    def handler(self, ticker, error=None):
+        self.blacklist.append(ticker)
+        if self.incomplete_handler == 'do_nothing':
             pass
-        elif self.handler == 'ignore':
-            pass
-        elif self.handler == 'blacklist':
-            self.blacklist.append(ticker)
-        elif self.handler == 'raise_exception':
-            raise FileNotFoundError(f'{ticker} was fetched with incomplete data')
+        elif self.incomplete_handler == 'delete':
+            os.remove(self.path_builder(ticker))
+        elif self.incomplete_handler == 'raise_error':
+            raise FileNotFoundError(f'{ticker} was not complete or error occured')
+        elif self.incomplete_handler == 'move':
+            if self.move_to is None:
+                raise NotADirectoryError('No "move to" directory was given')
+            else:
+                os.rename(
+                    self.path_builder(ticker),
+                    os.path.join(self.move_to, ticker + '.json')
+                )
+        elif self.incomplete_handler == 'ignore':
+            temp_stock = Stock(ticker).read_json(self.path_builder(ticker))
+            if error != 'zachs':
+                temp_stock._load_from_zachs(ZachsApi(ticker))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

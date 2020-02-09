@@ -1,10 +1,10 @@
 import datetime as dt
 import json
-
 import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+
 
 """API hub for stock.py
 fetch.py inside stock package is meant to be a directory for all stock related api 
@@ -17,122 +17,115 @@ Class:
 """
 
 
-class WorldTrade:
-    """WorldTrade is meant to deal with all things involving World Trading Data's api"""
+class Intraday:
+    """API for intraday function of world trading data
+
+    Attributes:
+        raw_intra_data (json): the raw file without any processing from world trade data
+        dates (list): list of dt.date for current raw file. Are in datetime format
+        times (list): list of dt.time for current raw file Are in datetime format
+        df_dict (dict): Intraday field for raw data, converted into df {volume:df, high:df...}
+    """
+    intraday_attrs = ['high', 'low', 'close', 'open', 'volume']
+    URL = 'https://intraday.worldtradingdata.com/api/v1/intraday?symbol={ticker}' \
+          '&range={range_of_data}&interval={interval_of_data}&api_token={api_key}'
 
     def __init__(self):
-        pass
+        self.raw_intra_data = None
+        self.dates = []
+        self.times = []
+        self.df_dict = {}
 
-    class Intraday:
-        """API for intraday function of world trading data
+    def dl_intraday(
+            self,
+            ticker: str,
+            api_key: str,
+            interval_of_data: int,
+            range_of_data: int,
+            surpress_message: bool = False
+    ):
+        """Download the data into a json format from world trade
 
-        Attributes:
-            intraday_attrs (list): list of the attributes that get returned from world trade
-            URL (str): the url to to the worldtrade intraday api
-            raw_intra_data (json): the raw file without any processing from world trade data
-            dates (list): list of dt.date for current raw file. Are in datetime format
-            times (list): list of dt.time for current raw file Are in datetime format
-            df_dict (dict): Intraday field for raw data, converted into df {volume:df, high:df...}
+        Parameters:
+            :param ticker: ticker of stock of interest
+            :param api_key: api key for world trading data
+            :param interval_of_data: interval to download (i.e. 5 mins, 15 mins, 10 mins)
+            :param range_of_data: range of data to download, max is 30 days
+            :param surpress_message: supress the downloading message
         """
-        intraday_attrs = ['high', 'low', 'close', 'open', 'volume']
-        URL = 'https://intraday.worldtradingdata.com/api/v1/intraday?symbol={ticker}' \
-              '&range={range_of_data}&interval={interval_of_data}&api_token={api_key}'
+        if not surpress_message:  # Mainly for debugging purposes
+            print(f'Downloading {ticker} from World Trading Data...')
 
-        def __init__(self):
-            self.raw_intra_data = None
-            self.dates = []
-            self.times = []
-            self.df_dict = {}
+        url = self.URL.format(
+            ticker=ticker,
+            range_of_data=range_of_data,
+            interval_of_data=interval_of_data,
+            api_key=api_key
+        )
+        data = requests.get(url)
+        if data.status_code != 200:
+            raise ConnectionError(f'code {data.status_code}')
+        self.raw_intra_data = data.json()
+        try:  # Check to see if the ticker was found, and intraday data is available
+            self.raw_intra_data['intraday']
+            return self
+        except KeyError:
+            raise FileNotFoundError(f'Error with ticker {ticker}: {self.raw_intra_data}')
 
-        def dl_intraday(
-                self,
-                ticker: str,
-                api_key: str,
-                interval_of_data: int,
-                range_of_data: int,
-                surpress_message: bool = False
-        ):
-            """Download the data into a json format from world trade
+    def raw_to_json(self, path, indent=4):
+        """Save raw intra data to json"""
 
-            Parameters:
-                :param ticker: ticker of stock of interest
-                :param api_key: api key for world trading data
-                :param interval_of_data: interval to download (i.e. 5 mins, 15 mins, 10 mins)
-                :param range_of_data: range of data to download, max is 30 days
-                :param surpress_message: supress the downloading message
-            """
-            if not surpress_message:  # Mainly for debugging purposes
-                print(f'Downloading {ticker} from World Trading Data...')
+        with open(path, 'w') as save:
+            json.dump(self.raw_intra_data, save, indent=indent)
 
-            url = self.URL.format(
-                ticker=ticker,
-                range_of_data=range_of_data,
-                interval_of_data=interval_of_data,
-                api_key=api_key
-            )
-            data = requests.get(url)
-            if data.status_code != 200:
-                raise ConnectionError(f'code {data.status_code}')
-            self.raw_intra_data = data.json()
-            try:  # Check to see if the ticker was found, and intraday data is available
-                self.raw_intra_data['intraday']
-            except KeyError:
-                raise FileNotFoundError(self.raw_intra_data)
+    def read_raw_json(self, path):
+        """Load raw_intra_data from file instead of world trade"""
 
-        def raw_to_json(self, path, indent=4):
-            """Save raw intra data to json"""
+        with open(path, 'r') as read:
+            self.raw_intra_data = json.load(read)
 
-            with open(path, 'w') as save:
-                json.dump(self.raw_intra_data, save, indent=indent)
+    def to_dataframe(self):
+        """Raw json price data to intraday dict
 
-        def read_raw_json(self, path):
-            """Load raw_intra_data from file instead of world trade"""
+        Converts data under intraday key to a dictionary of DataFrames, filling in any missing values with np.nan.
+        {attr: df, attr2: df, attr3: df...}
+        :return df_dict
+        """
+        self._find_index_col()
+        keys = self._rebuild_key()
+        for attr in self.intraday_attrs:
+            data = [self._return_intraday(key, attr) for key in keys]
+            np_data = np.array(data).reshape([len(self.dates), len(self.times)])
+            self.df_dict[attr] = pd.DataFrame(data=np_data, index=self.dates, columns=self.times)
+        return self
 
-            with open(path, 'r') as read:
-                self.raw_intra_data = json.load(read)
+    def _find_index_col(self):
+        """From the raw json file, extract date and time, row and column data"""
 
-        def to_dataframe(self):
-            """Raw json price data to intraday dict
+        intraday = self.raw_intra_data['intraday']
+        for i in intraday:
+            datetime = dt.datetime.strptime(i, '%Y-%m-%d %H:%M:%S')
+            self.dates.append(datetime.date())
+            self.times.append(datetime.time())
+        self.dates = list(sorted(set(self.dates)))
+        self.times = list(sorted(set(self.times)))
 
-            Converts data under intraday key to a dictionary of DataFrames, filling in any missing values with np.nan.
-            {attr: df, attr2: df, attr3: df...}
-            :return df_dict
-            """
-            self._find_index_col()
-            keys = self._rebuild_key()
-            for attr in self.intraday_attrs:
-                data = [self._return_intraday(key, attr) for key in keys]
-                np_data = np.array(data).reshape([len(self.dates), len(self.times)])
-                self.df_dict[attr] = pd.DataFrame(data=np_data, index=self.dates, columns=self.times)
-            return self.df_dict
+    def _return_intraday(self, key, attr):
+        intraday = self.raw_intra_data['intraday']
+        # Try except used for performance gains
+        try:
+            return float(intraday[key][attr])
+        except KeyError:
+            return np.nan
 
-        def _find_index_col(self):
-            """From the raw json file, extract date and time, row and column data"""
-
-            intraday = self.raw_intra_data['intraday']
-            for i in intraday:
-                datetime = dt.datetime.strptime(i, '%Y-%m-%d %H:%M:%S')
-                self.dates.append(datetime.date())
-                self.times.append(datetime.time())
-            self.dates = list(sorted(set(self.dates)))
-            self.times = list(sorted(set(self.times)))
-
-        def _return_intraday(self, key, attr):
-            intraday = self.raw_intra_data['intraday']
-            # Try except used for performance gains
-            try:
-                return float(intraday[key][attr])
-            except KeyError:
-                return np.nan
-
-        def _rebuild_key(self):
-            """
-            The raw data is missing time data for certain days due to missing data/ holidays cause stock market
-            to close early. Rebuilding the key along with _return_intraday will fill missing time data with np.nan.
-            """
-            rebuilt = [dt.datetime.combine(date, time).strftime('%Y-%m-%d %H:%M:%S')
-                       for date in self.dates for time in self.times]
-            return rebuilt
+    def _rebuild_key(self):
+        """
+        The raw data is missing time data for certain days due to missing data/ holidays cause stock market
+        to close early. Rebuilding the key along with _return_intraday will fill missing time data with np.nan.
+        """
+        rebuilt = [dt.datetime.combine(date, time).strftime('%Y-%m-%d %H:%M:%S')
+                   for date in self.dates for time in self.times]
+        return rebuilt
 
 
 class ZachsApi:
@@ -173,7 +166,7 @@ class ZachsApi:
             self._filter_sector()
             self._filter_stock_activity()
         except AttributeError:
-            raise FileNotFoundError('Stock not found')
+            raise FileNotFoundError(f'{self.ticker} not found')
 
     def getsoup(self):
         """Fetches data from zachs"""
