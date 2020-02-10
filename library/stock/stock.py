@@ -130,9 +130,11 @@ class Stock:
         worldtrade.to_dataframe()  # wt.df_dict has dataframe already converted to datetime
         self.market = self.MARKET_DICT[worldtrade.raw_intra_data['stock_exchange_short']]
         for i in self.INTRADAY:
+            # built in drop duplicates not working properly
+            temp_df = pd.concat([getattr(self, i), worldtrade.df_dict[i]], axis=0)
             setattr(
                 self, i,
-                pd.concat([getattr(self, i), worldtrade.df_dict[i]], axis=0).drop_duplicates()
+                temp_df.loc[~temp_df.index.duplicated(keep='first')]
             )
 
     def _fetch_from_zachs(self):
@@ -155,9 +157,11 @@ class Stock:
                 index=[dt.datetime.now().date()],
                 name=i
             )
+            # built in drop duplicates not working properly
+            temp_df = pd.concat([getattr(self, i), df_zachs])
             setattr(
                 self, i,
-                pd.concat([getattr(self, i), df_zachs]).drop_duplicates()
+                temp_df.loc[~temp_df.index.duplicated(keep='first')]
             )
         self.sector = zachs.sector
         self.industry = zachs.industry
