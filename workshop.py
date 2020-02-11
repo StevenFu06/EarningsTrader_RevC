@@ -25,22 +25,36 @@ database = cluster['main']
 collection = database['15 min interval']
 key = 'bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF'
 
-# BYSI = Stock('NVDA')
-# BYSI.read_json(os.path.join(test_db, 'NVDA.json'))
-# print(BYSI.close.loc[~BYSI.close.index.duplicated(keep='first')])
+if __name__ == '__main__':
+    # db = JsonManager(
+    #     test_db,
+    #     incomplete_handler='move',
+    #     move_to='incomplete',
+    #     api_key=key,
+    # )
+    # db.update()
+    # print(db.blacklist)
 
-nvda = Stock('NVDA').read_legacy_csv(revb_path, auto_populate=False)
-nvda.fetch(key)
-nvda.fetch(key)
-nvda.fetch(key)
-print(nvda.market_cap)
+    raw = Intraday().dl_intraday('AUBN', key, 15, 30)
+    df = pd.DataFrame.from_dict(raw.raw_intra_data['intraday'], orient='index')
+    df.index = pd.to_datetime(df.index)
 
-# db = JsonManager(
-#     test_db,
-#     api_key=key,
-#     incomplete_handler='move',
-#     move_to=incomplete,
-# )
-#
-# db.update()
-# print(db.blacklist)
+    times = list(set(df.index.time))
+    times.sort()
+
+    grouped = df.groupby(df.index.date)
+    # data = [
+    #     value['close'].to_list()
+    #     for key, value in grouped
+    # ]
+    # print(data)
+
+    for key, value in grouped:
+        print(value['close'])
+
+    # dates = list(set(df.index.date))
+    # dates.sort()
+    # times = list(set(df.index.time))
+    # times.sort()
+    # print(dates)
+    # print(times)

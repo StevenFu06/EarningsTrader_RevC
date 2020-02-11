@@ -20,7 +20,7 @@ Class:
 
 def calculate_threshold(wt: Intraday):
     wt.to_dataframe()
-    return len(wt.dates) + len(wt.times) + wt.df_dict['close'].isna().sum().sum()
+    return len(wt.dates) + len(wt.times) - wt.df_dict['close'].isna().sum().sum()
 
 
 class JsonManager:
@@ -28,7 +28,7 @@ class JsonManager:
 
     def __init__(self, path_to_database: str, **kwargs):
         # Main variables
-        self.dir_path = path_to_database
+        self.database_path = path_to_database
         self.threshold = 0
         self._is_valid()
         self._kwarg_setter(kwargs)
@@ -48,7 +48,7 @@ class JsonManager:
 
     def _is_valid(self):
         try:
-            self.all_stocks = [ticker[:-5] for ticker in os.listdir(self.dir_path)]
+            self.all_stocks = [ticker[:-5] for ticker in os.listdir(self.database_path)]
             validate = Stock(self.all_stocks[0])
             validate.read_json(self.path_builder(self.all_stocks[0]))
             self.interval_of_data = validate.interval_of_data
@@ -58,7 +58,7 @@ class JsonManager:
     def path_builder(self, ticker):
         """Returns built ticker path using given database location"""
 
-        return os.path.join(self.dir_path, ticker + '.json')
+        return os.path.join(self.database_path, ticker + '.json')
 
     def fetch_wt(self, ticker):
         wt = Intraday().dl_intraday(
@@ -91,10 +91,10 @@ class JsonManager:
                 )
                 for ticker in self.all_stocks
             ]
-            for future in message:
+            for future in as_completed(message):
                 print(future.result())
 
-    def download_and_save(self, ticker: str, stock: Stock):
+    def download_and_save(self, ticker: str, stock: Stock = None):
         """Downloads from api, filters, then saves to local json database
 
         Note:
@@ -104,6 +104,9 @@ class JsonManager:
 
             When connection error occurs, nothing happens to the stock, equal to incomplete_handler='do_nothing'
         """
+        if stock is None:
+            stock = Stock(ticker)
+
         try:
             wt = self.fetch_wt(ticker)
         except FileNotFoundError:

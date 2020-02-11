@@ -64,7 +64,8 @@ class Stock:
         '^XAX': '^XAX',
         'NYSE': '^NYA',
         'OTC': '^IXIC',
-        'NYSEAMERICAN': '^NYA'
+        'NYSEAMERICAN': '^NYA',
+        'NYSEARCA': '^NYA'
     }
 
     def __init__(self, ticker: str):
@@ -125,7 +126,7 @@ class Stock:
         self._load_from_wt(wt)
 
     def _load_from_wt(self, worldtrade):
-        """Converts WorlTrade.Intraday obj into stock (self) obj"""""
+        """Converts WorlTrade.Intraday obj into stock (self) obj"""
 
         worldtrade.to_dataframe()  # wt.df_dict has dataframe already converted to datetime
         self.market = self.MARKET_DICT[worldtrade.raw_intra_data['stock_exchange_short']]
