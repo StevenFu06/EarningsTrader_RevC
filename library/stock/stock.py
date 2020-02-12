@@ -65,7 +65,7 @@ class Stock:
         'NYSE': '^NYA',
         'OTC': '^IXIC',
         'NYSEAMERICAN': '^NYA',
-        'NYSEARCA': '^NYA'
+        'NYSEARCA': '^NYA',
     }
 
     def __init__(self, ticker: str):
@@ -129,7 +129,8 @@ class Stock:
         """Converts WorlTrade.Intraday obj into stock (self) obj"""
 
         worldtrade.to_dataframe()  # wt.df_dict has dataframe already converted to datetime
-        self.market = self.MARKET_DICT[worldtrade.raw_intra_data['stock_exchange_short']]
+        if self.market is None:  # If loaded from database, market doesnt need to be repopulated
+            self.market = self.MARKET_DICT[worldtrade.raw_intra_data['stock_exchange_short']]
         for i in self.INTRADAY:
             # built in drop duplicates not working properly
             temp_df = pd.concat([getattr(self, i), worldtrade.df_dict[i]], axis=0)

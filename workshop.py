@@ -9,6 +9,7 @@ import numpy as np
 import pymongo as db
 from bson import ObjectId
 import pandas as pd
+import time
 
 
 def ticker_path(ticker):
@@ -26,35 +27,21 @@ collection = database['15 min interval']
 key = 'bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF'
 
 if __name__ == '__main__':
-    # db = JsonManager(
-    #     test_db,
-    #     incomplete_handler='move',
-    #     move_to='incomplete',
-    #     api_key=key,
-    # )
-    # db.update()
-    # print(db.blacklist)
+    start = time.process_time()
 
-    raw = Intraday().dl_intraday('AUBN', key, 15, 30)
-    df = pd.DataFrame.from_dict(raw.raw_intra_data['intraday'], orient='index')
-    df.index = pd.to_datetime(df.index)
+    db = JsonManager(
+        incomplete,
+        incomplete_handler='raise_error',
+        move_to=incomplete,
+        api_key=key,
+        surpress_message=True,
+        parallel_mode='multiprocess',
+        tolerance=1
+    )
+    db.update()
+    print(db.blacklist)
 
-    times = list(set(df.index.time))
-    times.sort()
+    end = time.process_time()
+    print(f'Ran in {end-start} seconds')
 
-    grouped = df.groupby(df.index.date)
-    # data = [
-    #     value['close'].to_list()
-    #     for key, value in grouped
-    # ]
-    # print(data)
 
-    for key, value in grouped:
-        print(value['close'])
-
-    # dates = list(set(df.index.date))
-    # dates.sort()
-    # times = list(set(df.index.time))
-    # times.sort()
-    # print(dates)
-    # print(times)

@@ -1,8 +1,8 @@
 from library.stock.stock import Stock
 from library.stock.fetch import ZachsApi, Intraday
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from itertools import repeat
+from concurrent.futures import ThreadPoolExecutor, as_completed, ProcessPoolExecutor
 import os
+import warnings
 
 """Database management module
 
@@ -20,7 +20,7 @@ Class:
 
 def calculate_threshold(wt: Intraday):
     wt.to_dataframe()
-    return len(wt.dates) + len(wt.times) - wt.df_dict['close'].isna().sum().sum()
+    return wt.df_dict['close'].count().sum()
 
 
 class JsonManager:
@@ -29,11 +29,16 @@ class JsonManager:
     def __init__(self, path_to_database: str, **kwargs):
         # Main variables
         self.database_path = path_to_database
+        self.incomplete_handler = 'blacklist'
         self.threshold = 0
+
+        # Initialize additional settings + error checking
         self._is_valid()
         self._kwarg_setter(kwargs)
 
     def _kwarg_setter(self, kwargs):
+        # Concurrent settings
+        self._thread_or_multiprocess(kwargs.pop('parallel_mode', 'multithread'))
         self.max_workers = kwargs.pop('max_workers', None)
 
         # Worldtrade api data
@@ -42,9 +47,16 @@ class JsonManager:
         self.surpress_message = kwargs.pop('surpress_message', False)
 
         # For error checking
+        self.tolerance = kwargs.pop('tolerance', 0)
         self.blacklist = kwargs.pop('blacklist', [])
         self.incomplete_handler = kwargs.pop('incomplete_handler', 'blacklist')
         self.move_to = kwargs.pop('move_to', None)
+
+    def _thread_or_multiprocess(self, mode):
+        if mode == 'multithread':
+            self.parallel_mode = ThreadPoolExecutor
+        elif mode == 'multiprocess':
+            self.parallel_mode = ProcessPoolExecutor
 
     def _is_valid(self):
         try:
@@ -75,15 +87,17 @@ class JsonManager:
         Needs to be run before all updates unless incomplete stocks are being ignored. Generates threashold
         to evaulate incomplete stocks.
         """
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+        self.threshold = 0
+        with self.parallel_mode(max_workers=self.max_workers) as executor:
             for wt in executor.map(self.fetch_wt, self.SAMPLE_TICKERS):
                 self.threshold += calculate_threshold(wt)
             self.threshold = self.threshold/len(self.SAMPLE_TICKERS)
+        self.threshold = self.threshold*(1 - self.tolerance)
 
     def update(self):
         self.get_sample_data()
 
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+        with self.parallel_mode(max_workers=self.max_workers) as executor:
             message = [
                 executor.submit(
                     self.download_and_save,
@@ -111,31 +125,36 @@ class JsonManager:
             wt = self.fetch_wt(ticker)
         except FileNotFoundError:
             self.handler(ticker, stock, wt=False)
-            return f'WorldTrade raised error occured when downloading {ticker}'
+            return f'WorldTrade could not find {ticker}'
         except ConnectionError:
-            return f'WorldTrade: Connection error with {ticker}. {ticker} was ignored'
+            return f'WorldTrade: ConnectionError with {ticker}. {ticker} was ignored'
+        except KeyError:
+            return f'WorldTrade: KeyError with {ticker}. {ticker} was ignored'
+        except Exception as e:
+            return f'WorldTrade: Error {e} was raised for {ticker}. {ticker} was ignored'
 
         try:
             zachs = ZachsApi(ticker, surpress_message=self.surpress_message)
         except FileNotFoundError:
             self.handler(ticker, stock, zachs=False)
-            return f'Zachs raised error occured when downloading {ticker}'
+            return f'Zachs could not find {ticker}'
         except ConnectionError:
-            return f' Zachs: Connection error with {ticker}. {ticker} was ignored'
+            return f' Zachs: ConnectionError with {ticker}. {ticker} was ignored'
+        except Exception as e:
+            return f'Zachs: Error {e} was raised for {ticker}. {ticker} was ignored'
 
-        if calculate_threshold(wt) < self.threshold:
-            self.handler(ticker, stock)
-            return f'{ticker} did not meet threshold'
-        else:
+        if calculate_threshold(wt) >= self.threshold:
             stock._load_from_wt(wt)
             stock._load_from_zachs(zachs)
             stock.to_json(self.path_builder(ticker))
             return f'{ticker} successfully saved'
+        else:
+            self.handler(ticker, stock)
+            return f'{ticker} did not meet threshold'
 
     def handler(self, ticker, stock: Stock, wt=True, zachs=True):
 
-        if self.incomplete_handler != 'do_nothing':
-            self.blacklist.append(ticker)
+        self.blacklist.append(ticker)
 
         if self.incomplete_handler == 'delete':
             os.remove(self.path_builder(ticker))
@@ -153,13 +172,17 @@ class JsonManager:
                 )
 
         elif self.incomplete_handler == 'ignore':
-            stock.fetch(
-                self.api_key,
-                range_of_data=self.range_of_data,
-                zachs=zachs,
-                world_trade=wt
-            )
-            stock.to_json(self.path_builder(ticker))
+            try:
+                stock.fetch(
+                    self.api_key,
+                    range_of_data=self.range_of_data,
+                    zachs=zachs,
+                    world_trade=wt
+                )
+                stock.to_json(self.path_builder(ticker))
+            except Exception as e:
+                warnings.formatwarning = lambda msg, *args: f'{msg}\n'
+                warnings.warn(f'Was not able to force update {ticker}. {e} was raised')
 
 
 

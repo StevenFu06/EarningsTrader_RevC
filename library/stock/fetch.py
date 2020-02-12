@@ -102,13 +102,14 @@ class Intraday:
     def _find_index_col(self):
         """From the raw json file, extract date and time, row and column data"""
 
-        intraday = self.raw_intra_data['intraday']
-        for i in intraday:
-            datetime = dt.datetime.strptime(i, '%Y-%m-%d %H:%M:%S')
-            self.dates.append(datetime.date())
-            self.times.append(datetime.time())
-        self.dates = list(sorted(set(self.dates)))
-        self.times = list(sorted(set(self.times)))
+        # Worldtrade raw data is in the form orient=index thankfully
+        df = pd.DataFrame.from_dict(self.raw_intra_data['intraday'], orient='index')
+        df.index = pd.to_datetime(df.index)
+
+        self.dates = list(set(df.index.date))
+        self.dates.sort()
+        self.times = list(set(df.index.time))
+        self.times.sort()
 
     def _return_intraday(self, key, attr):
         intraday = self.raw_intra_data['intraday']
