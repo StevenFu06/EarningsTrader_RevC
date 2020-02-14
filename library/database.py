@@ -3,6 +3,8 @@ from library.stock.fetch import ZachsApi, Intraday
 from concurrent.futures import ThreadPoolExecutor, as_completed, ProcessPoolExecutor
 import os
 import warnings
+import pandas_market_calendars as mcal
+import datetime as dt
 
 """Database management module
 
@@ -31,6 +33,8 @@ class JsonManager:
         download_and_save: downloads and saves saves the passed stock.
         WARNING: download_and_save will overwrite existing stock if nothing passed in stock param
         download_list: downloads the given ticker list, WILL check for existing stocks
+        exists: tests if ticker is in database
+        delete: deletes the stock
 
     Modes:
         delete: Deletes the stock from the database
@@ -97,9 +101,9 @@ class JsonManager:
         """Check if path is a valid database and sets the interval_of_data"""
 
         try:
-            self.all_stocks = [ticker[:-5] for ticker in os.listdir(self.database_path)]
-            validate = Stock(self.all_stocks[0])
-            validate.read_json(self.path_builder(self.all_stocks[0]))
+            self.all_tickers = [ticker[:-5] for ticker in os.listdir(self.database_path)]
+            validate = Stock(self.all_tickers[0])
+            validate.read_json(self.path_builder(self.all_tickers[0]))
             self.interval_of_data = validate.interval_of_data
         except FileNotFoundError:
             raise FileNotFoundError('Database was invalid, local databases only')
@@ -131,8 +135,8 @@ class JsonManager:
         with self.parallel_mode(max_workers=self.max_workers) as executor:
             for wt in executor.map(self.fetch_wt, self.SAMPLE_TICKERS):
                 self.threshold += calculate_threshold(wt)
-            self.threshold = self.threshold/len(self.SAMPLE_TICKERS)
-        self.threshold = self.threshold*(1 - self.tolerance)
+            self.threshold = self.threshold / len(self.SAMPLE_TICKERS)
+        self.threshold = self.threshold * (1 - self.tolerance)
 
     def update(self):
         """Updates with error checking and logging messages"""
@@ -144,7 +148,7 @@ class JsonManager:
                     self.download_and_save,
                     ticker, Stock(ticker).read_json(self.path_builder(ticker))
                 )
-                for ticker in self.all_stocks
+                for ticker in self.all_tickers
             ]
             for future in as_completed(message):
                 print(future.result())
@@ -154,6 +158,7 @@ class JsonManager:
 
         Will check if stock exists, before downloading. If exists, stock will be updated.
         """
+
         # Checks if the stock exists
         def try_load(ticker):
             try:
@@ -161,6 +166,7 @@ class JsonManager:
             except FileNotFoundError:
                 print('New ticker')
                 return Stock(ticker)
+
         # Will use this dictionary to load the stock object instead of dynamically loading
         stock_dict = {
             ticker: try_load(ticker)
@@ -198,7 +204,7 @@ class JsonManager:
         """
         if stock is None:
             stock = Stock(ticker)
-            if ticker in self.all_stocks:
+            if ticker in self.all_tickers:
                 warnings.formatwarning = lambda msg, *args: f'{msg}\n'
                 warnings.warn(f'{ticker} exists in database. {ticker} will be overwritten with new data')
 
@@ -282,11 +288,56 @@ class JsonManager:
                 warnings.formatwarning = lambda msg, *args: f'{msg}\n'
                 warnings.warn(f'Was not able to force update {ticker}. {e} was raised')
 
+    def exists(self, ticker):
+        """Tests if stock is in database"""
+
+        if ticker in self.all_tickers:
+            return True
+        return False
+
+    def delete(self, ticker):
+        """Deletes the stock"""
+
+        if self.exists(ticker):
+            os.remove(self.path_builder(ticker))
+        else:
+            raise FileNotFoundError(f'{ticker} not in database')
 
 
+class Health:
+    MARKET_DICT = {
+        '^IXIC': 'NASDAQ',
+        '^NYA': 'NYSE',
+        '^XAX': 'NYMEX'
+    }
 
+    def __init__(self, stocks: list):
+        self.stocks = stocks
+        self.report = {}
 
+    def intraday_checker(self, stock, allowed_nan):
 
+        def nan_pct(df):
+            return df.isna().sum().sum() / df.count().sum()
 
+        calendar = mcal.get_calendar(self.MARKET_DICT[stock.market])
+        self.report[stock.ticker] = {}
 
+        for attr in stock.INTRADAY:
+            df = getattr(stock, attr)
+            for attr2 in stock.INTRADAY:
+                if df.index != getattr(stock, attr2):
+                    self.report[stock.ticker]['date coherance'] = False
 
+            if nan_pct(df) > allowed_nan:
+                self.report[stock.ticker]['nan percent'] = nan_pct(df)
+
+            stock_dates = df.index.to_list()
+            cal_dates = calendar.schedule(start_date=stock_dates[0],
+                                          end_date=stock_dates[-1]).index
+            mia_dates = []
+            for cal_date in cal_dates:
+                if cal_date not in stock_dates:
+                    mia_dates.append(cal_date.date().strftime('%Y-%m-%d'))
+            if mia_dates:
+                self.report[stock.ticker][f'mia {attr} dates'] = mia_dates

@@ -4,7 +4,7 @@ from library.stock.stock import Stock
 from library.stock.fetch import Intraday, ZachsApi
 from library.database import JsonManager, Health
 from library.earnings import YahooEarningsCalendar
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 import numpy as np
 import pymongo as db
 from bson import ObjectId
@@ -27,9 +27,17 @@ database = cluster['main']
 collection = database['15 min interval']
 key = 'bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF'
 
+
+def test(stock):
+    health = Health([stock])
+    health.intraday_checker(stock, 0)
+    return health.report
+
+
 if __name__ == '__main__':
+
     db = JsonManager(
-        test_db,
+        revc_path,
         incomplete_handler='raise_error',
         move_to=incomplete,
         api_key=key,
@@ -37,13 +45,15 @@ if __name__ == '__main__':
         parallel_mode='multiprocess',
         tolerance=1
     )
-    db.Health
+    stocks = []
+    for ticker in db.all_tickers:
+        stocks.append(Stock(ticker).read_legacy_csv(revb_path))
+        # stocks.append(Stock(ticker).read_json(ticker_path(ticker)))
 
-
-    # nasdaq = mcal.get_calendar('NASDAQ')
-    # dates = nasdaq.schedule(start_date=dt.date(2020, 12, 14), end_date=dt.date(2020, 12, 30))
-    # # dates.index = [
-    # #     i.date()
-    # #     for i in dates.index
-    # # ]
-    # print(dates['market_open'].to_list())
+    with ProcessPoolExecutor() as executor:
+        results = [
+            executor.submit(test, stock)
+            for stock in stocks
+        ]
+    for future in results:
+        print(future.result())
