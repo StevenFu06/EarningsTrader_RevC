@@ -35,6 +35,7 @@ class JsonManager:
         download_list: downloads the given ticker list, WILL check for existing stocks
         exists: tests if ticker is in database
         delete: deletes the stock
+        load_all: loads all tickers as stock objects in a list
 
     Modes:
         delete: Deletes the stock from the database
@@ -303,41 +304,78 @@ class JsonManager:
         else:
             raise FileNotFoundError(f'{ticker} not in database')
 
+    def load_all(self):
+        """Using multithreading load all stocks from disk
+
+        :return list of loaded stocks (loaded_stocks)
+        """
+        loaded_stocks = [
+            Stock(ticker).read_json(self.path_builder(ticker))
+            for ticker in self.all_tickers
+        ]
+        return loaded_stocks
+
 
 class Health:
+
     MARKET_DICT = {
         '^IXIC': 'NASDAQ',
         '^NYA': 'NYSE',
         '^XAX': 'NYMEX'
     }
 
-    def __init__(self, stocks: list):
+    def __init__(self, stocks: list, allowed_nan, last_date, max_workers=None):
+        self.allowed_nan = allowed_nan
+        self.last_date = last_date
         self.stocks = stocks
         self.report = {}
+        self.max_workers = max_workers
 
-    def intraday_checker(self, stock, allowed_nan):
+    def intraday_checker(self, stock):
 
         def nan_pct(df):
             return df.isna().sum().sum() / df.count().sum()
 
         calendar = mcal.get_calendar(self.MARKET_DICT[stock.market])
-        self.report[stock.ticker] = {}
+        tail = len(set(getattr(stock, stock.INTRADAY[-1]).index))
 
         for attr in stock.INTRADAY:
             df = getattr(stock, attr)
-            for attr2 in stock.INTRADAY:
-                if df.index != getattr(stock, attr2):
-                    self.report[stock.ticker]['date coherance'] = False
 
-            if nan_pct(df) > allowed_nan:
-                self.report[stock.ticker]['nan percent'] = nan_pct(df)
+            if tail != len(set(df.index)):
+                self.report[stock.ticker]['date coherance'] = attr
 
-            stock_dates = df.index.to_list()
-            cal_dates = calendar.schedule(start_date=stock_dates[0],
-                                          end_date=stock_dates[-1]).index
-            mia_dates = []
-            for cal_date in cal_dates:
-                if cal_date not in stock_dates:
-                    mia_dates.append(cal_date.date().strftime('%Y-%m-%d'))
-            if mia_dates:
-                self.report[stock.ticker][f'mia {attr} dates'] = mia_dates
+            if nan_pct(df) > self.allowed_nan:
+                self.report[stock.ticker][f'{attr}: nan percent'] = nan_pct(df)
+
+            stock_dates = len(set(df.index.to_list()))
+            cal_dates = len(set(calendar.schedule(start_date=df.index[0],
+                                                  end_date=df.index[-1]).index))
+            if cal_dates > stock_dates:
+                self.report[stock.ticker][f'{attr}: mia dates percentage'] = stock_dates / cal_dates
+
+    def outdated(self, stock):
+        if stock.close.index[-1] < self.last_date:
+            self.report[stock.ticker]['outdated'] = True
+
+    def missing_attrs(self, stock):
+        missing = []
+        for attr in stock.__dict__:
+            if attr.empty or attr is None:
+                missing.append(attr)
+        self.report[stock.ticker][missing] = missing
+
+    def _multiprocess(self, stock):
+        self.report[stock.ticker] = {}
+        self.intraday_checker(stock)
+        self.outdated(stock)
+        self.missing_attrs(stock)
+
+    def full_report(self):
+        with ProcessPoolExecutor(max_workers=self.max_workers) as executor:
+            results = [
+                executor.submit(self._multiprocess, stock)
+                for stock in self.stocks
+            ]
+            for future in results:
+                future.result()
