@@ -317,13 +317,63 @@ class JsonManager:
 
 
 class Health:
-
+    
     MARKET_DICT = {
         '^IXIC': 'NASDAQ',
         '^NYA': 'NYSE',
         '^XAX': 'NYMEX'
     }
 
+    def __init__(self, stock, allowed_nan, last_date):
+        self.stock = stock  
+        self.allowed_nan = allowed_nan
+        self.last_date = last_date
+        self.report = {}
+
+    def intraday_checker(self):
+
+        def nan_pct(df):
+            return df.isna().sum().sum() / df.count().sum()
+
+        calendar = mcal.get_calendar(self.MARKET_DICT[self.stock.market])
+        tail = len(set(getattr(self.stock, self.stock.INTRADAY[-1]).index))
+
+        for attr in self.stock.INTRADAY:
+            df = getattr(self.stock, attr)
+
+            if tail != len(set(df.index)):
+                self.report['date coherance'] = attr
+
+            if nan_pct(df) > self.allowed_nan:
+                self.report[f'{attr}: nan percent'] = nan_pct(df)
+
+            self.stock_dates = len(set(df.index.to_list()))
+            cal_dates = len(set(calendar.schedule(start_date=df.index[0],
+                                                  end_date=df.index[-1]).index))
+            if cal_dates > self.stock_dates:
+                self.report[f'{attr}: mia dates percentage'] = self.stock_dates / cal_dates
+
+    def outdated(self):
+        if self.stock.close.index[-1] < self.last_date:
+            self.report.update({'outdated': True})
+
+    def missing_attrs(self):
+        missing = []
+        for attr in self.stock.__dict__:
+            if getattr(self.stock, attr) is None:
+                missing.append(attr)
+                continue
+            try:
+                if getattr(self.stock, attr).empty:
+                    missing.append(attr)
+            except AttributeError:
+                continue
+        if missing:
+            self.report['missing data'] = missing
+
+
+class Report:
+    
     def __init__(self, stocks: list, allowed_nan, last_date, max_workers=None):
         self.allowed_nan = allowed_nan
         self.last_date = last_date
@@ -331,51 +381,42 @@ class Health:
         self.report = {}
         self.max_workers = max_workers
 
-    def intraday_checker(self, stock):
-
-        def nan_pct(df):
-            return df.isna().sum().sum() / df.count().sum()
-
-        calendar = mcal.get_calendar(self.MARKET_DICT[stock.market])
-        tail = len(set(getattr(stock, stock.INTRADAY[-1]).index))
-
-        for attr in stock.INTRADAY:
-            df = getattr(stock, attr)
-
-            if tail != len(set(df.index)):
-                self.report[stock.ticker]['date coherance'] = attr
-
-            if nan_pct(df) > self.allowed_nan:
-                self.report[stock.ticker][f'{attr}: nan percent'] = nan_pct(df)
-
-            stock_dates = len(set(df.index.to_list()))
-            cal_dates = len(set(calendar.schedule(start_date=df.index[0],
-                                                  end_date=df.index[-1]).index))
-            if cal_dates > stock_dates:
-                self.report[stock.ticker][f'{attr}: mia dates percentage'] = stock_dates / cal_dates
-
-    def outdated(self, stock):
-        if stock.close.index[-1] < self.last_date:
-            self.report[stock.ticker]['outdated'] = True
-
-    def missing_attrs(self, stock):
-        missing = []
-        for attr in stock.__dict__:
-            if attr.empty or attr is None:
-                missing.append(attr)
-        self.report[stock.ticker][missing] = missing
-
-    def _multiprocess(self, stock):
-        self.report[stock.ticker] = {}
-        self.intraday_checker(stock)
-        self.outdated(stock)
-        self.missing_attrs(stock)
+    @staticmethod
+    def _multiprocess(stock, allowed_nan, last_date):
+        print(f'Checking {stock.ticker} on process: {os.getpid()}')
+        report = Health(stock, allowed_nan, last_date)
+        try:
+            report.intraday_checker()
+            report.missing_attrs()
+            report.outdated()
+            return stock.ticker, health.report
+        except Exception as e:
+            return stock.ticker, {['error occured']: e}
 
     def full_report(self):
         with ProcessPoolExecutor(max_workers=self.max_workers) as executor:
             results = [
-                executor.submit(self._multiprocess, stock)
+                executor.submit(self._multiprocess, stock, self.allowed_nan, self.last_date)
                 for stock in self.stocks
             ]
-            for future in results:
-                future.result()
+            for future in as_completed(results):
+                ticker, report = future.result()
+                if report:
+                    self.report[ticker] = report
+        return self.report
+
+
+if __name__ == '__main__':
+    import pickle
+
+    main_db = 'E:\\Libraries\\Documents\\Stock Assistant\\database'
+    revb_path = 'E:\\Libraries\\Documents\\Stock Assistant\\database\\data'
+    with open(os.path.join(main_db, 'cached_stocks.pkl'), 'rb') as read:
+        stocks = pickle.load(read)
+
+    print('done')
+    stocks.insert(0, Stock('NVDA').read_legacy_csv(revb_path))
+
+    health = Report(stocks, 0.2, dt.date(2020, 1, 10))
+    health.full_report()
+    print(health.report)
