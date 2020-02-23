@@ -253,6 +253,12 @@ class Stock:
 
         :param path: path to main database folder. Think rev_B data folder.
         """
+        # Converting back to a format revB can read
+        legacy_dict = {
+            '^IXIC': 'NASDAQ',
+            '^XAX': '^XAX',
+            '^NYA': 'NYSE'
+        }
         # Create folder with self.ticker name if doesnt exist
         if not os.path.exists(f'{path}\\{self.ticker}'):
             os.makedirs(f'{path}\\{self.ticker}')
@@ -263,7 +269,7 @@ class Stock:
         metadata = pd.read_csv(f'{path}\\database.csv', index_col=0)
         metadata.loc[self.ticker, 'last_date'] = self.close.index[-1]
         metadata.loc[self.ticker, 'first_date'] = self.close.index[0]
-        metadata.loc[self.ticker, 'market'] = self.market
+        metadata.loc[self.ticker, 'market'] = legacy_dict[self.market]
         metadata.to_csv(f'{path}\\database.csv')
 
     def read_legacy_csv(self, path: str, auto_populate: bool = False):

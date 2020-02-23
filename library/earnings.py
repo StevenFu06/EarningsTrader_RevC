@@ -16,6 +16,19 @@ Class:
 """
 
 
+class Earnings:
+
+    def __init__(self, path):
+        self.path = path
+        with open(path, 'r') as read:
+            self.data = json.load(read)
+
+    def update(self):
+        cal = ZachsEarningsCalendar(dt.datetime.now().date())
+        cal.get_earnings()
+        print(cal.earnings)
+
+
 class YahooEarningsCalendar:
     """Earnings date information scraped from yahoo finance
 
@@ -126,7 +139,7 @@ class ZachsEarningsCalendar:
         self.earnings = None
         # dt.time(1,0) is the time zachs wants for the url. NOTE **1AM IS EST TIME**
         self.timestamp = int(dt.datetime.combine(date, dt.time(1, 0)).timestamp())
-        self.url = 'https://www.zacks.com/includes/classes/z2_class_calendarfunctions_data.php?calltype='\
+        self.url = 'https://www.zacks.com/includes/classes/z2_class_calendarfunctions_data.php?calltype=' \
                    f'eventscal&date={self.timestamp}&type=1'
         self.get_earnings()
 

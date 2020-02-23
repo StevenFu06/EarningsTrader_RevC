@@ -3,6 +3,7 @@ import os
 import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed, ProcessPoolExecutor
 import json
+import pandas as pd
 import pandas_market_calendars as mcal
 from library.stock.fetch import ZachsApi, Intraday
 from library.stock.stock import Stock
@@ -17,11 +18,14 @@ Note:
 Class:
     JsonManager: Deals with the management of the local json database. 
         - Updater/ downloader: updates and filters out incomplete data
-        - Health: Reports health and cleans the database of incomplete files/ corrupted data
+    Health: Health of indivudual stocks... i.e. corrupted data, incomplete files etc...
+    Report: Reports health of a given stock list, multithreaded
 """
 
 
 def calculate_threshold(wt: Intraday):
+    """Threshold to determine quality of data"""
+
     wt.to_dataframe()
     return wt.df_dict['close'].count().sum()
 
@@ -160,13 +164,12 @@ class JsonManager:
 
         Will check if stock exists, before downloading. If exists, stock will be updated.
         """
-
         # Checks if the stock exists
         def try_load(ticker):
             try:
                 return Stock(ticker).read_json(self.path_builder(ticker))
             except FileNotFoundError:
-                print('New ticker')
+                print(f'{ticker} is new')
                 return Stock(ticker)
 
         # Will use this dictionary to load the stock object instead of dynamically loading
@@ -328,6 +331,64 @@ class JsonManager:
             raise RuntimeError('Incomplete handler mode cannot clean database')
         for ticker in report:
             self.handler(ticker)
+
+    def convert_to_legacy(self, legacy_path: os.path):
+        """Converts the json database to legacy database"""
+
+        # Tests if is currently a valid database
+        try:
+            pd.read_csv(os.path.join(legacy_path, 'database.csv'))
+        except FileNotFoundError:
+            #  Creates the database file if doesnt exist
+            pd.DataFrame(columns=['market', 'first_date', 'last_date'])\
+                .to_csv(os.path.join(legacy_path, 'database.csv'))
+
+        for ticker in self.all_tickers:
+            save_csv = Stock(ticker).read_json(self.path_builder(ticker))
+            save_csv.to_legacy_csv(legacy_path)
+            print(f'Successfully converted {ticker}')
+
+
+def legacy_to_json(legacy_path: os.path, json_path: os.path, autopopulate=True, pop_list=None):
+    """Convert legacy db to json db
+
+    Parameters:
+        :param legacy_path: the path to old database with database.csv
+        :param json_path: new database location
+        :param autopopulate: whether or not to autopopulate zachs data
+        :param pop_list: any additional files to pop
+
+    :return a list of errors that occured with ticker
+    """
+    # Checks if path given is a valid database path
+    try:
+        all_tickers = os.listdir(legacy_path)
+        pd.read_csv(os.path.join(legacy_path, 'database.csv'))
+        all_tickers.remove('database.csv')
+    except FileNotFoundError:
+        raise FileNotFoundError('Path is not a valid database')
+
+    # For multithreading, mainly for populating zachs info
+    def converter(ticker):
+        try:
+            save_json = Stock(ticker).read_legacy_csv(legacy_path, auto_populate=autopopulate)
+            return save_json, ticker
+        except Exception as e:
+            return e, ticker
+
+    # Remove any unwanted files
+    if pop_list is not None:
+        for to_pop in pop_list:
+            all_tickers.remove(to_pop)
+
+    problem_stocks = []
+    with ThreadPoolExecutor() as executor:
+        for result in executor.map(converter, all_tickers):
+            if not isinstance(result[0], Exception):  # If error occurs ignore the stock
+                result[0].to_json(os.path.join(json_path, f'{result[0].ticker}.json'))
+            else:
+                problem_stocks.append(result)
+    return problem_stocks
 
 
 class Health:
