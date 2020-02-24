@@ -17,16 +17,81 @@ Class:
 
 
 class Earnings:
+    """Api to interact with earnings data
 
+    :arg path (os.path): path to the earnings.json file
+    :arg data (dict): the contents of the earnings.json file
+
+    Functions:
+        update: updates the file to today
+        get_dates: Gets the infomration for the dates given (list)
+        effective date: returns all info for the given effective date
+        all_stocks: returns all stocks as a list
+        save: saves the data dict
+    """
     def __init__(self, path):
         self.path = path
         with open(path, 'r') as read:
             self.data = json.load(read)
 
     def update(self):
-        cal = ZachsEarningsCalendar(dt.datetime.now().date())
-        cal.get_earnings()
-        print(cal.earnings)
+        """Updates the earnings data to today"""
+
+        last_available = dt.datetime.strptime(list(self.data.keys())[-1], '%Y-%m-%d').date()
+        dates = [
+            last_available + dt.timedelta(days=days+1)  # +1 to exclude last day in data
+            for days in range(0, (dt.datetime.today().date()-last_available).days)
+        ]
+        self.get_dates(dates)
+
+    def get_dates(self, dates: list):
+        """Get all the data for the given list of dates, will overwrite duplicates"""
+
+        for date in dates:
+            print(f'fetching date {date}')
+            cal = ZachsEarningsCalendar(date)
+            # Will only append dates if not empty
+            if not cal.earnings.empty:
+                self.data.update({
+                    date.strftime('%Y-%m-%d'): cal.earnings.to_dict(orient='index')
+                })
+
+    def effective_date(self, date):
+        """Effective date means the date that the earnings report impacts
+
+        I.e. if earnings call is amc on feb 2, the effective date is feb 3
+        """
+        try:  # Try catch incase date doesnt exist, will return empty dict
+            bmo = self.data[date.strftime('%Y-%m-%d')].items()
+        except KeyError:
+            bmo = {}
+        try:
+            amc = self.data[(date - dt.timedelta(days=1)).strftime('%Y-%m-%d')].items()
+        except KeyError:
+            amc = {}
+        output = {}
+        for stock, data in bmo:
+            if data['time'] == 'bmo':
+                output[stock] = data
+        for stock, data in amc:
+            if data['time'] == 'amc':
+                output[stock] = data
+        return output
+
+    def save(self):
+        """Saves the data file to the given path"""
+
+        with open(self.path, 'w') as write:
+            json.dump(self.data, write, indent=4, sort_keys=True)
+
+    def all_stocks(self):
+        """List all the stocks in the earnings file"""
+
+        stocks = {
+            stock
+            for date in self.data for stock in self.data[date].keys()
+        }
+        return stocks
 
 
 class YahooEarningsCalendar:

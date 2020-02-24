@@ -24,21 +24,15 @@ collection = database['15 min interval']
 key = 'bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF'
 
 if __name__ == '__main__':
-    from library.database import convert_from_legacy
-    from library.database import JsonManager
+    import json
+    from library.earnings import Earnings, ZachsEarningsCalendar
 
-    database = JsonManager(json_db)
+    pd.set_option('display.max_rows', 500)
+    pd.set_option('display.max_columns', 500)
+    pd.set_option('display.width', 1000)
 
-    database.convert_to_legacy(csv_db)
-
-
-
-
-
-
-
-
-
+    earnings = Earnings('earnings.json')
+    print(len(earnings.all_stocks()))
 
 
 
