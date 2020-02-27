@@ -7,6 +7,7 @@ import pandas as pd
 import pandas_market_calendars as mcal
 from library.stock.fetch import ZachsApi, Intraday
 from library.stock.stock import Stock
+import shutil
 
 """Database management module
 
@@ -56,7 +57,7 @@ class JsonManager:
         :param SAMPLE_TICKERS: sample tickers in which the threshold will be calculated from.
 
     Kwargs:
-        :param tolerance: tolerance on incomplete stocks, default is 0. (0 - 1 percentage)
+        :param tolerance (int): tolerance on incomplete stocks, default is 0. (0 - 1 percentage)
         :param blacklist: all problem stocks will be appened to this parameter. Could preload list.
         :param _thread_or_multiprocess: choose the multiprocessing mode, default is multithread
         :param max_workers: choose maximum amount of workers to use for parallel programing
@@ -157,7 +158,13 @@ class JsonManager:
                 for ticker in self.all_tickers
             ]
             for future in as_completed(message):
-                print(future.result())
+                result = future.result()
+                # Because blacklist cannot be appended multiprocess
+                if isinstance(result, tuple):
+                    self.blacklist.append(result[1])
+                    print(result[0])
+                else:
+                    print(result)
 
     def download_list(self, tickers: list):
         """Downloads and saves the list of tickers
@@ -189,7 +196,13 @@ class JsonManager:
                 for ticker in tickers
             ]
             for future in as_completed(message):
-                print(future.result())
+                result = future.result()
+                # Because blacklist cannot be appended multiprocess
+                if isinstance(result, tuple):
+                    self.blacklist.append(result[1])
+                    print(result[0])
+                else:
+                    print(result)
 
     def download_and_save(self, ticker: str, stock: Stock = None):
         """Downloads from api, filters, then saves to local json database
@@ -218,15 +231,20 @@ class JsonManager:
             wt = self.fetch_wt(ticker)
         except FileNotFoundError:
             self.handler(ticker, stock, wt=False)
-            return f'WorldTrade could not find {ticker}'
+            return f'WorldTrade could not find {ticker}', ticker
         except Exception as e:
             return f'WorldTrade: Error {e} was raised for {ticker}. {ticker} was ignored'
 
         try:
             zachs = ZachsApi(ticker, surpress_message=self.surpress_message)
+        # There are 2 exceptions not finding on zachs will throw
+        # FileNotFound and Connection Error
         except FileNotFoundError:
             self.handler(ticker, stock, zachs=False)
-            return f'Zachs could not find {ticker}'
+            return f'Zachs could not find {ticker}', ticker
+        except ConnectionError:
+            self.handler(ticker, stock, zachs=False)
+            return f'Zachs could not find {ticker}', ticker
         except Exception as e:
             return f'Zachs: Error {e} was raised for {ticker}. {ticker} was ignored'
 
@@ -238,7 +256,7 @@ class JsonManager:
             return f'{ticker} successfully saved'
         else:
             self.handler(ticker, stock)
-            return f'{ticker} did not meet threshold'
+            return f'{ticker} did not meet threshold', ticker
 
     def handler(self, ticker: str, stock: Stock = None, wt=True, zachs=True):
         """Handler for incomplete/errors when downloading
@@ -261,8 +279,6 @@ class JsonManager:
             move: moves the problem stock to a specified move_to location
             ignore: ignores the problem and TRIES to force update the stock
         """
-        self.blacklist.append(ticker)
-
         if self.incomplete_handler == 'delete':
             os.remove(self.path_builder(ticker))
 
@@ -273,10 +289,14 @@ class JsonManager:
             if self.move_to is None:
                 raise NotADirectoryError('No "move to" directory was given')
             else:
-                os.rename(
-                    self.path_builder(ticker),
-                    os.path.join(self.move_to, ticker + '.json')
-                )
+                try:
+                    shutil.move(  # used inorder to prevent duplicates from stopping program
+                        self.path_builder(ticker),
+                        os.path.join(self.move_to, ticker + '.json')
+                    )
+                except FileNotFoundError:
+                    pass  # For new stocks that are incomplete
+
         # Not both wt and zachs get checked so may fail alot
         # Api will do a double call when ignore, once in main download, once now
         elif self.incomplete_handler == 'ignore':

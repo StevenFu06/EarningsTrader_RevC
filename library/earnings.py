@@ -39,8 +39,8 @@ class Earnings:
 
         last_available = dt.datetime.strptime(list(self.data.keys())[-1], '%Y-%m-%d').date()
         dates = [
-            last_available + dt.timedelta(days=days+1)  # +1 to exclude last day in data
-            for days in range(0, (dt.datetime.today().date()-last_available).days)
+            last_available + dt.timedelta(days=days)  # +1 to get to today
+            for days in range(0, (dt.datetime.today().date()-last_available).days+1)
         ]
         self.get_dates(dates)
 

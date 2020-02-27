@@ -24,20 +24,6 @@ collection = database['15 min interval']
 key = 'bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF'
 
 if __name__ == '__main__':
-    import json
-    from library.earnings import Earnings, ZachsEarningsCalendar
-
-    pd.set_option('display.max_rows', 500)
-    pd.set_option('display.max_columns', 500)
-    pd.set_option('display.width', 1000)
-
-    earnings = Earnings('earnings.json')
-    print(len(earnings.all_stocks()))
-
-
-
-
-
-
-
+    nasdaq = Stock('^IXIC').read_json('E:\\Libraries\\Documents\\Stock Assistant\\database\\json_db - 15\\markets\\^IXIC.json')
+    print(nasdaq.close.index)
 

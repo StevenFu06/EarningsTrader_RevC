@@ -66,6 +66,7 @@ class Stock:
         'OTC': '^IXIC',
         'NYSEAMERICAN': '^NYA',
         'NYSEARCA': '^NYA',
+        'CBOE': '^IXIC'
     }
 
     def __init__(self, ticker: str):
