@@ -15,7 +15,7 @@ if __name__ == '__main__':
         api_key='bYoNpNAQNbpLSKQaMkcwrI68rniyZQDXL7B7aqYNPsHMrr0CRLIe3UYCfkHF',
         tolerance=0.2,
         incomplete_handler='move',
-        move_to=os.path.join(json_path, 'test'),
+        move_to=os.path.join(json_path, 'incomplete'),
         parallel_mode='multiprocess',
         blacklist=blacklist,
         surpress_message=True
