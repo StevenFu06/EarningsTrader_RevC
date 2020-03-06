@@ -17,7 +17,7 @@ if __name__ == '__main__':
         incomplete_handler='move',
         move_to=os.path.join(json_path, 'test'),
         parallel_mode='multiprocess',
-        blacklist=blacklist,
+        blacklist='move',
         surpress_message=True
     )
 
