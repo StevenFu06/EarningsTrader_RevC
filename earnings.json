@@ -21173,7 +21173,7 @@
     "2020-02-26": {
         "ACA": {
             "estimate": 0.38,
-            "reported": "--",
+            "reported": 0.44,
             "time": "amc"
         },
         "ACAD": {
@@ -21181,25 +21181,10 @@
             "reported": -0.34,
             "time": "amc"
         },
-        "ACEL": {
-            "estimate": 0.1,
-            "reported": "--",
-            "time": "--"
-        },
-        "ADDYY": {
-            "estimate": 0.55,
-            "reported": "--",
-            "time": "--"
-        },
         "ADPT": {
             "estimate": -0.16,
             "reported": -0.17,
             "time": "amc"
-        },
-        "ADRO": {
-            "estimate": -0.21,
-            "reported": "--",
-            "time": "--"
         },
         "AEE": {
             "estimate": 0.31,
@@ -21208,33 +21193,23 @@
         },
         "AEGN": {
             "estimate": 0.4,
-            "reported": "--",
+            "reported": 0.39,
             "time": "amc"
         },
         "AFIN": {
             "estimate": 0.26,
-            "reported": 0.24,
+            "reported": -0.04,
             "time": "amc"
+        },
+        "AHEXY": {
+            "estimate": 0.65,
+            "reported": 0.88,
+            "time": "--"
         },
         "ALIM": {
             "estimate": -0.37,
             "reported": 0.08,
             "time": "amc"
-        },
-        "ALPMY": {
-            "estimate": 0.29,
-            "reported": "--",
-            "time": "--"
-        },
-        "ALTM": {
-            "estimate": 0.0,
-            "reported": "--",
-            "time": "amc"
-        },
-        "AMADY": {
-            "estimate": 0.58,
-            "reported": "--",
-            "time": "--"
         },
         "AMCX": {
             "estimate": 1.73,
@@ -21261,30 +21236,10 @@
             "reported": 0.08,
             "time": "amc"
         },
-        "APLT": {
-            "estimate": -0.63,
-            "reported": "--",
-            "time": "--"
-        },
         "ARNA": {
             "estimate": -1.62,
             "reported": -1.76,
             "time": "amc"
-        },
-        "ASM": {
-            "estimate": 0.01,
-            "reported": "--",
-            "time": "amc"
-        },
-        "ATEYY": {
-            "estimate": 0.33,
-            "reported": "--",
-            "time": "--"
-        },
-        "ATRO": {
-            "estimate": -0.87,
-            "reported": 0.19,
-            "time": "bmo"
         },
         "AVA": {
             "estimate": 0.68,
@@ -21293,13 +21248,8 @@
         },
         "BATRK": {
             "estimate": 0.77,
-            "reported": "--",
+            "reported": -0.86,
             "time": "bmo"
-        },
-        "BAYRY": {
-            "estimate": 0.34,
-            "reported": "--",
-            "time": "--"
         },
         "BCSF": {
             "estimate": 0.41,
@@ -21311,20 +21261,10 @@
             "reported": 0.48,
             "time": "amc"
         },
-        "BGNE": {
-            "estimate": -4.84,
-            "reported": "--",
-            "time": "--"
-        },
         "BHR": {
             "estimate": 0.25,
-            "reported": 0.27,
+            "reported": 0.36,
             "time": "amc"
-        },
-        "BILI": {
-            "estimate": -0.13,
-            "reported": "--",
-            "time": "--"
         },
         "BKNG": {
             "estimate": 22.11,
@@ -21343,13 +21283,8 @@
         },
         "BRY": {
             "estimate": 0.4,
-            "reported": "--",
+            "reported": 0.41,
             "time": "amc"
-        },
-        "CAI": {
-            "estimate": 0.65,
-            "reported": "--",
-            "time": "--"
         },
         "CARS": {
             "estimate": 0.31,
@@ -21358,11 +21293,11 @@
         },
         "CCI": {
             "estimate": 1.48,
-            "reported": 1.38,
+            "reported": 0.43,
             "time": "amc"
         },
         "CCLP": {
-            "estimate": 0.0,
+            "estimate": -0.01,
             "reported": -0.04,
             "time": "bmo"
         },
@@ -21378,17 +21313,12 @@
         },
         "CIO": {
             "estimate": 0.26,
-            "reported": 0.25,
+            "reported": 0.02,
             "time": "bmo"
-        },
-        "CKH": {
-            "estimate": 0.28,
-            "reported": "--",
-            "time": "--"
         },
         "CLDT": {
             "estimate": 0.3,
-            "reported": 0.32,
+            "reported": -0.05,
             "time": "bmo"
         },
         "CLGX": {
@@ -21403,7 +21333,7 @@
         },
         "CLI": {
             "estimate": 0.41,
-            "reported": 0.44,
+            "reported": 0.53,
             "time": "amc"
         },
         "CLR": {
@@ -21426,19 +21356,9 @@
             "reported": -0.35,
             "time": "amc"
         },
-        "CODI": {
-            "estimate": 0.43,
-            "reported": "--",
-            "time": "amc"
-        },
-        "CODX": {
-            "estimate": -0.08,
-            "reported": "--",
-            "time": "--"
-        },
         "CORR": {
             "estimate": 0.95,
-            "reported": 0.94,
+            "reported": 0.55,
             "time": "amc"
         },
         "CPE": {
@@ -21451,20 +21371,15 @@
             "reported": 1.04,
             "time": "amc"
         },
-        "CPKF": {
-            "estimate": 0.34,
-            "reported": "--",
-            "time": "--"
-        },
         "CRC": {
             "estimate": 0.6,
             "reported": 0.73,
             "time": "amc"
         },
-        "CULP": {
-            "estimate": 0.13,
-            "reported": "--",
-            "time": "--"
+        "CRK": {
+            "estimate": 0.18,
+            "reported": 0.22,
+            "time": "bmo"
         },
         "CUTR": {
             "estimate": 0.15,
@@ -21486,11 +21401,6 @@
             "reported": -0.14,
             "time": "amc"
         },
-        "CYRN": {
-            "estimate": -0.05,
-            "reported": "--",
-            "time": "--"
-        },
         "DDD": {
             "estimate": 0.01,
             "reported": 0.05,
@@ -21501,35 +21411,15 @@
             "reported": 0.22,
             "time": "bmo"
         },
-        "DINRF": {
-            "estimate": 0.49,
-            "reported": "--",
-            "time": "--"
-        },
-        "DMAC": {
-            "estimate": -0.25,
-            "reported": "--",
-            "time": "--"
-        },
         "DOC": {
             "estimate": 0.27,
-            "reported": 0.27,
+            "reported": 0.22,
             "time": "bmo"
-        },
-        "DSSI": {
-            "estimate": 0.94,
-            "reported": "--",
-            "time": "--"
         },
         "DY": {
             "estimate": -0.02,
             "reported": -0.23,
             "time": "bmo"
-        },
-        "DYAI": {
-            "estimate": -0.07,
-            "reported": "--",
-            "time": "--"
         },
         "ECOL": {
             "estimate": 0.59,
@@ -21546,10 +21436,20 @@
             "reported": -0.74,
             "time": "amc"
         },
+        "EIDX": {
+            "estimate": -0.55,
+            "reported": -0.51,
+            "time": "--"
+        },
         "ENDP": {
             "estimate": 0.57,
             "reported": 0.74,
             "time": "bmo"
+        },
+        "EQH": {
+            "estimate": 1.15,
+            "reported": 1.37,
+            "time": "--"
         },
         "ERI": {
             "estimate": 0.24,
@@ -21576,6 +21476,11 @@
             "reported": 0.86,
             "time": "bmo"
         },
+        "EVA": {
+            "estimate": 0.32,
+            "reported": 0.39,
+            "time": "bmo"
+        },
         "EXTN": {
             "estimate": -0.18,
             "reported": -0.45,
@@ -21592,7 +21497,7 @@
             "time": "amc"
         },
         "FIX": {
-            "estimate": 0.71,
+            "estimate": 0.73,
             "reported": 0.84,
             "time": "amc"
         },
@@ -21601,10 +21506,10 @@
             "reported": -0.59,
             "time": "amc"
         },
-        "FOE": {
-            "estimate": 0.28,
-            "reported": "--",
-            "time": "--"
+        "FOSL": {
+            "estimate": 0.84,
+            "reported": -0.06,
+            "time": "bmo"
         },
         "FRGI": {
             "estimate": 0.05,
@@ -21613,7 +21518,7 @@
         },
         "FRTA": {
             "estimate": -0.11,
-            "reported": "--",
+            "reported": -0.11,
             "time": "amc"
         },
         "FTDR": {
@@ -21622,13 +21527,13 @@
             "time": "bmo"
         },
         "FTI": {
-            "estimate": 0.41,
+            "estimate": 0.43,
             "reported": 0.03,
             "time": "amc"
         },
         "FWONK": {
             "estimate": -0.4,
-            "reported": "--",
+            "reported": -0.55,
             "time": "bmo"
         },
         "GBT": {
@@ -21648,22 +21553,17 @@
         },
         "GLIBA": {
             "estimate": -0.26,
-            "reported": "--",
+            "reported": -1.92,
             "time": "amc"
         },
         "GNL": {
             "estimate": 0.45,
-            "reported": 0.44,
+            "reported": 0.1,
             "time": "bmo"
-        },
-        "GPOR": {
-            "estimate": 0.18,
-            "reported": "--",
-            "time": "--"
         },
         "GTE": {
             "estimate": -0.03,
-            "reported": "--",
+            "reported": -0.03,
             "time": "amc"
         },
         "GTHX": {
@@ -21673,13 +21573,8 @@
         },
         "GTY": {
             "estimate": 0.45,
-            "reported": 0.43,
+            "reported": 0.33,
             "time": "amc"
-        },
-        "GVA": {
-            "estimate": 0.3,
-            "reported": "--",
-            "time": "--"
         },
         "HBB": {
             "estimate": 1.45,
@@ -21701,16 +21596,6 @@
             "reported": 0.56,
             "time": "bmo"
         },
-        "IBN": {
-            "estimate": 0.18,
-            "reported": "--",
-            "time": "--"
-        },
-        "IDYA": {
-            "estimate": -0.51,
-            "reported": "--",
-            "time": "--"
-        },
         "IONS": {
             "estimate": 0.91,
             "reported": 1.28,
@@ -21721,9 +21606,9 @@
             "reported": 0.39,
             "time": "amc"
         },
-        "KLDO": {
-            "estimate": -0.7,
-            "reported": "--",
+        "KNSA": {
+            "estimate": -0.57,
+            "reported": -0.58,
             "time": "--"
         },
         "KOF": {
@@ -21735,16 +21620,6 @@
             "estimate": 0.06,
             "reported": -0.06,
             "time": "amc"
-        },
-        "KW": {
-            "estimate": 0.32,
-            "reported": "--",
-            "time": "amc"
-        },
-        "LAIX": {
-            "estimate": -0.48,
-            "reported": "--",
-            "time": "--"
         },
         "LB": {
             "estimate": 1.86,
@@ -21771,14 +21646,9 @@
             "reported": 0.94,
             "time": "bmo"
         },
-        "LPL": {
-            "estimate": -2.12,
-            "reported": "--",
-            "time": "--"
-        },
         "LSXMK": {
             "estimate": 0.53,
-            "reported": "--",
+            "reported": 0.39,
             "time": "bmo"
         },
         "MAR": {
@@ -21786,19 +21656,9 @@
             "reported": 1.57,
             "time": "amc"
         },
-        "MCRI": {
-            "estimate": 0.4,
-            "reported": "--",
-            "time": "--"
-        },
         "MDGL": {
             "estimate": -1.56,
             "reported": -1.8,
-            "time": "--"
-        },
-        "MDOMF": {
-            "estimate": 0.2,
-            "reported": "--",
             "time": "--"
         },
         "MEC": {
@@ -21826,33 +21686,13 @@
             "reported": 2.0,
             "time": "bmo"
         },
-        "MIRM": {
-            "estimate": -0.85,
-            "reported": "--",
-            "time": "--"
-        },
-        "MIST": {
-            "estimate": -0.52,
-            "reported": "--",
-            "time": "--"
-        },
-        "MNLO": {
-            "estimate": -0.83,
-            "reported": "--",
-            "time": "--"
-        },
-        "MNOV": {
-            "estimate": -0.08,
-            "reported": "--",
-            "time": "--"
-        },
         "MNTA": {
             "estimate": -0.57,
             "reported": -0.85,
             "time": "bmo"
         },
         "MRNA": {
-            "estimate": -0.42,
+            "estimate": -0.43,
             "reported": -0.37,
             "time": "bmo"
         },
@@ -21863,18 +21703,13 @@
         },
         "NESR": {
             "estimate": 0.2,
-            "reported": "--",
+            "reported": 0.21,
             "time": "bmo"
         },
         "NI": {
             "estimate": 0.42,
-            "reported": "--",
+            "reported": 0.45,
             "time": "bmo"
-        },
-        "NLNK": {
-            "estimate": -0.28,
-            "reported": "--",
-            "time": "--"
         },
         "NMFC": {
             "estimate": 0.35,
@@ -21888,13 +21723,8 @@
         },
         "NSTG": {
             "estimate": -0.6,
-            "reported": "--",
+            "reported": -0.14,
             "time": "amc"
-        },
-        "NTEC": {
-            "estimate": -0.2,
-            "reported": "--",
-            "time": "--"
         },
         "NTES": {
             "estimate": 3.02,
@@ -21924,6 +21754,11 @@
         "ODP": {
             "estimate": 0.09,
             "reported": 0.12,
+            "time": "bmo"
+        },
+        "OGE": {
+            "estimate": 0.29,
+            "reported": 0.18,
             "time": "bmo"
         },
         "OPK": {
@@ -21958,32 +21793,12 @@
         },
         "PK": {
             "estimate": 0.69,
-            "reported": 0.72,
+            "reported": 0.51,
             "time": "amc"
-        },
-        "PORBF": {
-            "estimate": 0.16,
-            "reported": "--",
-            "time": "--"
         },
         "PRQR": {
             "estimate": -0.48,
             "reported": -0.43,
-            "time": "--"
-        },
-        "PRTH": {
-            "estimate": -0.05,
-            "reported": "--",
-            "time": "--"
-        },
-        "PSNL": {
-            "estimate": -0.26,
-            "reported": "--",
-            "time": "--"
-        },
-        "PSTI": {
-            "estimate": -0.47,
-            "reported": "--",
             "time": "--"
         },
         "PTLA": {
@@ -22003,23 +21818,18 @@
         },
         "RAIL": {
             "estimate": -0.62,
-            "reported": "--",
+            "reported": -1.17,
             "time": "amc"
         },
-        "RESI": {
-            "estimate": 0.03,
-            "reported": "--",
-            "time": "--"
+        "REZI": {
+            "estimate": 0.28,
+            "reported": 0.39,
+            "time": "bmo"
         },
         "RGNX": {
             "estimate": -0.4,
             "reported": -0.72,
             "time": "bmo"
-        },
-        "RLMD": {
-            "estimate": -0.41,
-            "reported": "--",
-            "time": "--"
         },
         "RUBI": {
             "estimate": 0.14,
@@ -22029,11 +21839,6 @@
         "SABR": {
             "estimate": 0.17,
             "reported": 0.16,
-            "time": "bmo"
-        },
-        "SAPMF": {
-            "estimate": 0.04,
-            "reported": "--",
             "time": "bmo"
         },
         "SB": {
@@ -22055,11 +21860,6 @@
             "estimate": 0.32,
             "reported": 0.27,
             "time": "amc"
-        },
-        "SHSP": {
-            "estimate": -0.18,
-            "reported": "--",
-            "time": "--"
         },
         "SILK": {
             "estimate": -0.27,
@@ -22086,20 +21886,10 @@
             "reported": 0.34,
             "time": "amc"
         },
-        "SLGG": {
-            "estimate": -0.43,
-            "reported": "--",
-            "time": "--"
-        },
         "SND": {
             "estimate": 0.15,
             "reported": 0.21,
             "time": "bmo"
-        },
-        "SONM": {
-            "estimate": -0.03,
-            "reported": "--",
-            "time": "--"
         },
         "SPNE": {
             "estimate": -0.44,
@@ -22118,11 +21908,11 @@
         },
         "SRI": {
             "estimate": 0.37,
-            "reported": "--",
+            "reported": 0.28,
             "time": "amc"
         },
         "SRPT": {
-            "estimate": -1.91,
+            "estimate": -1.83,
             "reported": -3.16,
             "time": "amc"
         },
@@ -22162,7 +21952,7 @@
             "time": "amc"
         },
         "TCMD": {
-            "estimate": 0.24,
+            "estimate": 0.23,
             "reported": 0.22,
             "time": "amc"
         },
@@ -22185,16 +21975,6 @@
             "estimate": 0.77,
             "reported": 0.81,
             "time": "bmo"
-        },
-        "TMDI": {
-            "estimate": -0.17,
-            "reported": "--",
-            "time": "--"
-        },
-        "TOCA": {
-            "estimate": -0.55,
-            "reported": "--",
-            "time": "--"
         },
         "TPB": {
             "estimate": 0.46,
@@ -22238,12 +22018,17 @@
         },
         "VER": {
             "estimate": 0.16,
-            "reported": 0.16,
+            "reported": 0.05,
             "time": "bmo"
         },
-        "VIPS": {
-            "estimate": 0.29,
-            "reported": "--",
+        "VGZ": {
+            "estimate": -0.03,
+            "reported": -0.01,
+            "time": "--"
+        },
+        "VIST": {
+            "estimate": -0.34,
+            "reported": -0.51,
             "time": "--"
         },
         "VKTX": {
@@ -22251,23 +22036,13 @@
             "reported": -0.1,
             "time": "amc"
         },
-        "VXRT": {
-            "estimate": -0.13,
-            "reported": "--",
-            "time": "--"
-        },
-        "WAAS": {
-            "estimate": -0.17,
-            "reported": "--",
-            "time": "--"
-        },
         "WB": {
             "estimate": 0.75,
             "reported": 0.77,
             "time": "bmo"
         },
         "WEN": {
-            "estimate": 0.08,
+            "estimate": 0.09,
             "reported": 0.08,
             "time": "bmo"
         },
@@ -22276,14 +22051,9 @@
             "reported": 0.37,
             "time": "amc"
         },
-        "WMMVY": {
-            "estimate": 0.39,
-            "reported": "--",
-            "time": "--"
-        },
         "WPG": {
             "estimate": 0.33,
-            "reported": 0.31,
+            "reported": 0.09,
             "time": "amc"
         },
         "WPX": {
@@ -22293,7 +22063,7 @@
         },
         "WSR": {
             "estimate": 0.26,
-            "reported": 0.26,
+            "reported": 0.38,
             "time": "amc"
         },
         "WTRG": {
@@ -22304,6 +22074,3025 @@
         "WYND": {
             "estimate": 1.56,
             "reported": 1.58,
+            "time": "bmo"
+        },
+        "ZOM": {
+            "estimate": -0.02,
+            "reported": -0.03,
+            "time": "--"
+        }
+    },
+    "2020-02-27": {
+        "AAOI": {
+            "estimate": -0.23,
+            "reported": -0.18,
+            "time": "amc"
+        },
+        "AAON": {
+            "estimate": 0.27,
+            "reported": 0.33,
+            "time": "bmo"
+        },
+        "AAXN": {
+            "estimate": 0.39,
+            "reported": 0.41,
+            "time": "amc"
+        },
+        "ABEV": {
+            "estimate": 0.06,
+            "reported": 0.07,
+            "time": "bmo"
+        },
+        "ACHC": {
+            "estimate": 0.49,
+            "reported": 0.51,
+            "time": "amc"
+        },
+        "ADAP": {
+            "estimate": -0.33,
+            "reported": -0.28,
+            "time": "bmo"
+        },
+        "ADSK": {
+            "estimate": 0.9,
+            "reported": 0.92,
+            "time": "amc"
+        },
+        "AIMT": {
+            "estimate": -1.05,
+            "reported": -1.06,
+            "time": "amc"
+        },
+        "ALG": {
+            "estimate": 1.61,
+            "reported": 1.31,
+            "time": "amc"
+        },
+        "ALLO": {
+            "estimate": -0.69,
+            "reported": -0.58,
+            "time": "bmo"
+        },
+        "ALTR": {
+            "estimate": 0.07,
+            "reported": 0.09,
+            "time": "amc"
+        },
+        "AMC": {
+            "estimate": 0.08,
+            "reported": 0.35,
+            "time": "amc"
+        },
+        "AMH": {
+            "estimate": 0.29,
+            "reported": 0.08,
+            "time": "amc"
+        },
+        "ANIP": {
+            "estimate": 1.18,
+            "reported": 1.08,
+            "time": "bmo"
+        },
+        "APLS": {
+            "estimate": -1.15,
+            "reported": -1.7,
+            "time": "--"
+        },
+        "AQN": {
+            "estimate": 0.18,
+            "reported": 0.2,
+            "time": "amc"
+        },
+        "ARGX": {
+            "estimate": -1.1,
+            "reported": "--",
+            "time": "bmo"
+        },
+        "ASM": {
+            "estimate": 0.01,
+            "reported": 0.0,
+            "time": "amc"
+        },
+        "AT": {
+            "estimate": 0.05,
+            "reported": -0.1,
+            "time": "amc"
+        },
+        "ATNX": {
+            "estimate": -0.5,
+            "reported": -0.28,
+            "time": "bmo"
+        },
+        "ATRA": {
+            "estimate": -1.3,
+            "reported": -1.36,
+            "time": "bmo"
+        },
+        "AXDX": {
+            "estimate": -0.43,
+            "reported": -0.39,
+            "time": "amc"
+        },
+        "AY": {
+            "estimate": -0.12,
+            "reported": 0.01,
+            "time": "amc"
+        },
+        "BAYRY": {
+            "estimate": 0.34,
+            "reported": 0.36,
+            "time": "--"
+        },
+        "BBDC": {
+            "estimate": 0.16,
+            "reported": 0.15,
+            "time": "amc"
+        },
+        "BBY": {
+            "estimate": 2.76,
+            "reported": 2.9,
+            "time": "bmo"
+        },
+        "BCEI": {
+            "estimate": 1.2,
+            "reported": 1.25,
+            "time": "amc"
+        },
+        "BFS": {
+            "estimate": 0.74,
+            "reported": 0.27,
+            "time": "--"
+        },
+        "BIDU": {
+            "estimate": 3.71,
+            "reported": 3.81,
+            "time": "amc"
+        },
+        "BIG": {
+            "estimate": 2.53,
+            "reported": 2.39,
+            "time": "amc"
+        },
+        "BLU": {
+            "estimate": -0.12,
+            "reported": -0.18,
+            "time": "--"
+        },
+        "BMCH": {
+            "estimate": 0.36,
+            "reported": 0.37,
+            "time": "bmo"
+        },
+        "BPMP": {
+            "estimate": 0.39,
+            "reported": 0.45,
+            "time": "bmo"
+        },
+        "BTG": {
+            "estimate": 0.07,
+            "reported": 0.07,
+            "time": "amc"
+        },
+        "BUD": {
+            "estimate": 0.53,
+            "reported": 0.48,
+            "time": "bmo"
+        },
+        "BWEN": {
+            "estimate": -0.04,
+            "reported": -0.04,
+            "time": "bmo"
+        },
+        "BYND": {
+            "estimate": 0.0,
+            "reported": -0.01,
+            "time": "amc"
+        },
+        "CABO": {
+            "estimate": 9.67,
+            "reported": 9.72,
+            "time": "amc"
+        },
+        "CARA": {
+            "estimate": -0.62,
+            "reported": -0.61,
+            "time": "amc"
+        },
+        "CBRE": {
+            "estimate": 1.34,
+            "reported": 1.32,
+            "time": "bmo"
+        },
+        "CCC": {
+            "estimate": 0.16,
+            "reported": 0.13,
+            "time": "bmo"
+        },
+        "CCO": {
+            "estimate": -0.03,
+            "reported": 0.06,
+            "time": "bmo"
+        },
+        "CCOI": {
+            "estimate": 0.21,
+            "reported": 0.25,
+            "time": "bmo"
+        },
+        "CDNA": {
+            "estimate": 0.02,
+            "reported": 0.04,
+            "time": "amc"
+        },
+        "CDXS": {
+            "estimate": 0.06,
+            "reported": 0.02,
+            "time": "amc"
+        },
+        "CHMI": {
+            "estimate": 0.44,
+            "reported": 0.48,
+            "time": "amc"
+        },
+        "CHRS": {
+            "estimate": 0.68,
+            "reported": 0.53,
+            "time": "amc"
+        },
+        "CHS": {
+            "estimate": -0.07,
+            "reported": -0.03,
+            "time": "bmo"
+        },
+        "CLNC": {
+            "estimate": 0.37,
+            "reported": 0.37,
+            "time": "amc"
+        },
+        "CNCE": {
+            "estimate": -0.78,
+            "reported": -0.86,
+            "time": "bmo"
+        },
+        "CNP": {
+            "estimate": 0.36,
+            "reported": 0.45,
+            "time": "bmo"
+        },
+        "COLL": {
+            "estimate": -0.17,
+            "reported": -0.07,
+            "time": "amc"
+        },
+        "CRAI": {
+            "estimate": 0.78,
+            "reported": 0.77,
+            "time": "bmo"
+        },
+        "CROX": {
+            "estimate": 0.1,
+            "reported": 0.12,
+            "time": "bmo"
+        },
+        "CTMX": {
+            "estimate": -0.55,
+            "reported": -0.79,
+            "time": "amc"
+        },
+        "CWEN": {
+            "estimate": 0.39,
+            "reported": -0.06,
+            "time": "bmo"
+        },
+        "CWH": {
+            "estimate": -0.27,
+            "reported": -0.35,
+            "time": "amc"
+        },
+        "CWK": {
+            "estimate": 0.73,
+            "reported": 0.78,
+            "time": "amc"
+        },
+        "CWT": {
+            "estimate": 0.33,
+            "reported": 0.24,
+            "time": "bmo"
+        },
+        "DELL": {
+            "estimate": 2.0,
+            "reported": 2.0,
+            "time": "amc"
+        },
+        "DISCA": {
+            "estimate": 0.93,
+            "reported": 0.98,
+            "time": "bmo"
+        },
+        "DNLI": {
+            "estimate": -0.53,
+            "reported": -0.56,
+            "time": "--"
+        },
+        "DRNA": {
+            "estimate": -0.08,
+            "reported": -0.58,
+            "time": "amc"
+        },
+        "DRQ": {
+            "estimate": 0.12,
+            "reported": 0.23,
+            "time": "amc"
+        },
+        "EB": {
+            "estimate": -0.22,
+            "reported": -0.16,
+            "time": "amc"
+        },
+        "ECC": {
+            "estimate": 0.37,
+            "reported": 0.23,
+            "time": "bmo"
+        },
+        "EIX": {
+            "estimate": 1.04,
+            "reported": 0.99,
+            "time": "amc"
+        },
+        "EKSO": {
+            "estimate": -0.04,
+            "reported": -0.04,
+            "time": "amc"
+        },
+        "EME": {
+            "estimate": 1.5,
+            "reported": 1.54,
+            "time": "bmo"
+        },
+        "EOG": {
+            "estimate": 1.16,
+            "reported": 1.35,
+            "time": "amc"
+        },
+        "EQM": {
+            "estimate": 1.13,
+            "reported": 0.82,
+            "time": "bmo"
+        },
+        "EQT": {
+            "estimate": 0.09,
+            "reported": -0.03,
+            "time": "bmo"
+        },
+        "ESPR": {
+            "estimate": -2.71,
+            "reported": -2.26,
+            "time": "--"
+        },
+        "ETRN": {
+            "estimate": 0.43,
+            "reported": 1.24,
+            "time": "bmo"
+        },
+        "EVOP": {
+            "estimate": 0.19,
+            "reported": 0.24,
+            "time": "bmo"
+        },
+        "EXLS": {
+            "estimate": 0.72,
+            "reported": 0.79,
+            "time": "bmo"
+        },
+        "FDUS": {
+            "estimate": 0.36,
+            "reported": 0.34,
+            "time": "amc"
+        },
+        "FLIR": {
+            "estimate": 0.62,
+            "reported": 0.55,
+            "time": "bmo"
+        },
+        "FLY": {
+            "estimate": 1.71,
+            "reported": 2.49,
+            "time": "bmo"
+        },
+        "FMX": {
+            "estimate": 1.18,
+            "reported": 0.71,
+            "time": "bmo"
+        },
+        "FPRX": {
+            "estimate": -0.97,
+            "reported": -0.89,
+            "time": "amc"
+        },
+        "FRO": {
+            "estimate": 0.72,
+            "reported": 0.54,
+            "time": "bmo"
+        },
+        "FSK": {
+            "estimate": 0.2,
+            "reported": 0.21,
+            "time": "amc"
+        },
+        "FSS": {
+            "estimate": 0.43,
+            "reported": 0.48,
+            "time": "bmo"
+        },
+        "FTAI": {
+            "estimate": 0.07,
+            "reported": 0.12,
+            "time": "amc"
+        },
+        "FTCH": {
+            "estimate": -0.24,
+            "reported": -0.34,
+            "time": "amc"
+        },
+        "GCAP": {
+            "estimate": -0.27,
+            "reported": -0.21,
+            "time": "bmo"
+        },
+        "GKOS": {
+            "estimate": -0.17,
+            "reported": -0.06,
+            "time": "amc"
+        },
+        "GOLF": {
+            "estimate": 0.22,
+            "reported": 0.24,
+            "time": "bmo"
+        },
+        "GPOR": {
+            "estimate": 0.18,
+            "reported": 0.05,
+            "time": "amc"
+        },
+        "GSAT": {
+            "estimate": 0.01,
+            "reported": -0.03,
+            "time": "--"
+        },
+        "GTN": {
+            "estimate": 0.49,
+            "reported": 0.81,
+            "time": "bmo"
+        },
+        "GTX": {
+            "estimate": 0.74,
+            "reported": 0.82,
+            "time": "bmo"
+        },
+        "HCAT": {
+            "estimate": -0.29,
+            "reported": -0.21,
+            "time": "amc"
+        },
+        "HGV": {
+            "estimate": 0.57,
+            "reported": 0.61,
+            "time": "bmo"
+        },
+        "HHC": {
+            "estimate": -0.8,
+            "reported": -0.03,
+            "time": "amc"
+        },
+        "HMHC": {
+            "estimate": -0.84,
+            "reported": -1.01,
+            "time": "bmo"
+        },
+        "HMLP": {
+            "estimate": 0.35,
+            "reported": 0.34,
+            "time": "bmo"
+        },
+        "HRTG": {
+            "estimate": 0.35,
+            "reported": 0.44,
+            "time": "amc"
+        },
+        "IBP": {
+            "estimate": 0.86,
+            "reported": 0.92,
+            "time": "bmo"
+        },
+        "ICAD": {
+            "estimate": -0.12,
+            "reported": -0.1,
+            "time": "amc"
+        },
+        "ICFI": {
+            "estimate": 1.24,
+            "reported": 1.18,
+            "time": "amc"
+        },
+        "ICUI": {
+            "estimate": 1.62,
+            "reported": 1.94,
+            "time": "amc"
+        },
+        "IMMU": {
+            "estimate": -0.45,
+            "reported": -0.5,
+            "time": "amc"
+        },
+        "INT": {
+            "estimate": 0.64,
+            "reported": 0.87,
+            "time": "amc"
+        },
+        "IQ": {
+            "estimate": -0.49,
+            "reported": -0.49,
+            "time": "amc"
+        },
+        "IRTC": {
+            "estimate": -0.52,
+            "reported": -0.65,
+            "time": "amc"
+        },
+        "ISDR": {
+            "estimate": 0.1,
+            "reported": 0.07,
+            "time": "amc"
+        },
+        "ISEE": {
+            "estimate": -0.28,
+            "reported": -0.39,
+            "time": "bmo"
+        },
+        "JCP": {
+            "estimate": -0.08,
+            "reported": 0.13,
+            "time": "bmo"
+        },
+        "JNCE": {
+            "estimate": -0.38,
+            "reported": -0.68,
+            "time": "bmo"
+        },
+        "KDP": {
+            "estimate": 0.35,
+            "reported": 0.35,
+            "time": "bmo"
+        },
+        "KOP": {
+            "estimate": 0.29,
+            "reported": 0.29,
+            "time": "bmo"
+        },
+        "KRP": {
+            "estimate": 0.03,
+            "reported": 2.3,
+            "time": "bmo"
+        },
+        "LADR": {
+            "estimate": 0.38,
+            "reported": 0.4,
+            "time": "amc"
+        },
+        "LAUR": {
+            "estimate": 0.47,
+            "reported": 0.24,
+            "time": "bmo"
+        },
+        "LAWS": {
+            "estimate": 0.32,
+            "reported": 0.48,
+            "time": "bmo"
+        },
+        "LMRK": {
+            "estimate": 0.11,
+            "reported": 0.11,
+            "time": "bmo"
+        },
+        "LYV": {
+            "estimate": -0.7,
+            "reported": -0.88,
+            "time": "amc"
+        },
+        "MAIN": {
+            "estimate": 0.6,
+            "reported": 0.62,
+            "time": "amc"
+        },
+        "MNRL": {
+            "estimate": 0.21,
+            "reported": 0.19,
+            "time": "amc"
+        },
+        "MNST": {
+            "estimate": 0.46,
+            "reported": 0.47,
+            "time": "amc"
+        },
+        "MORF": {
+            "estimate": -0.35,
+            "reported": -0.66,
+            "time": "--"
+        },
+        "MSEX": {
+            "estimate": 0.41,
+            "reported": 0.46,
+            "time": "--"
+        },
+        "MTZ": {
+            "estimate": 1.26,
+            "reported": 1.3,
+            "time": "amc"
+        },
+        "MYL": {
+            "estimate": 1.29,
+            "reported": 1.4,
+            "time": "amc"
+        },
+        "MYOK": {
+            "estimate": -1.41,
+            "reported": -1.27,
+            "time": "amc"
+        },
+        "NEO": {
+            "estimate": 0.07,
+            "reported": 0.1,
+            "time": "bmo"
+        },
+        "NEPH": {
+            "estimate": -0.15,
+            "reported": -0.02,
+            "time": "amc"
+        },
+        "NKTR": {
+            "estimate": -0.69,
+            "reported": -0.64,
+            "time": "amc"
+        },
+        "NLSN": {
+            "estimate": 0.41,
+            "reported": 0.41,
+            "time": "bmo"
+        },
+        "NOMD": {
+            "estimate": 0.34,
+            "reported": 0.35,
+            "time": "bmo"
+        },
+        "NPTN": {
+            "estimate": 0.1,
+            "reported": 0.1,
+            "time": "amc"
+        },
+        "NRG": {
+            "estimate": 0.57,
+            "reported": 0.54,
+            "time": "bmo"
+        },
+        "NTLA": {
+            "estimate": -0.54,
+            "reported": -0.57,
+            "time": "bmo"
+        },
+        "NVCR": {
+            "estimate": 0.01,
+            "reported": 0.04,
+            "time": "bmo"
+        },
+        "OPRT": {
+            "estimate": 0.63,
+            "reported": 0.94,
+            "time": "amc"
+        },
+        "OPRX": {
+            "estimate": 0.0,
+            "reported": -0.03,
+            "time": "amc"
+        },
+        "ORTX": {
+            "estimate": -0.44,
+            "reported": -0.46,
+            "time": "bmo"
+        },
+        "OTIC": {
+            "estimate": -0.47,
+            "reported": -0.36,
+            "time": "amc"
+        },
+        "OXY": {
+            "estimate": -0.09,
+            "reported": -0.3,
+            "time": "amc"
+        },
+        "OYST": {
+            "estimate": -0.58,
+            "reported": -1.41,
+            "time": "amc"
+        },
+        "PAGS": {
+            "estimate": 0.32,
+            "reported": 0.3,
+            "time": "amc"
+        },
+        "PBA": {
+            "estimate": 0.42,
+            "reported": 0.16,
+            "time": "amc"
+        },
+        "PDCO": {
+            "estimate": 0.37,
+            "reported": 0.47,
+            "time": "bmo"
+        },
+        "PLAN": {
+            "estimate": -0.11,
+            "reported": -0.07,
+            "time": "bmo"
+        },
+        "PLYA": {
+            "estimate": -0.14,
+            "reported": -0.08,
+            "time": "amc"
+        },
+        "PLYM": {
+            "estimate": 0.46,
+            "reported": -0.44,
+            "time": "bmo"
+        },
+        "PRAA": {
+            "estimate": 0.5,
+            "reported": 0.6,
+            "time": "amc"
+        },
+        "PRGO": {
+            "estimate": 1.09,
+            "reported": 1.06,
+            "time": "bmo"
+        },
+        "PSTG": {
+            "estimate": 0.22,
+            "reported": 0.23,
+            "time": "amc"
+        },
+        "PVAC": {
+            "estimate": 1.92,
+            "reported": 2.75,
+            "time": "amc"
+        },
+        "PWR": {
+            "estimate": 0.84,
+            "reported": 0.93,
+            "time": "bmo"
+        },
+        "RARX": {
+            "estimate": -0.58,
+            "reported": -0.79,
+            "time": "--"
+        },
+        "RBA": {
+            "estimate": 0.4,
+            "reported": 0.44,
+            "time": "amc"
+        },
+        "RDUS": {
+            "estimate": -0.74,
+            "reported": -0.54,
+            "time": "bmo"
+        },
+        "RICK": {
+            "estimate": 0.64,
+            "reported": 0.62,
+            "time": "amc"
+        },
+        "RIGL": {
+            "estimate": -0.11,
+            "reported": -0.1,
+            "time": "amc"
+        },
+        "RLH": {
+            "estimate": -0.19,
+            "reported": -0.25,
+            "time": "bmo"
+        },
+        "RNGR": {
+            "estimate": -0.09,
+            "reported": -0.01,
+            "time": "amc"
+        },
+        "RP": {
+            "estimate": 0.47,
+            "reported": 0.48,
+            "time": "amc"
+        },
+        "RRC": {
+            "estimate": 0.0,
+            "reported": 0.08,
+            "time": "amc"
+        },
+        "RUN": {
+            "estimate": 0.27,
+            "reported": 0.1,
+            "time": "amc"
+        },
+        "RWT": {
+            "estimate": 0.37,
+            "reported": 0.45,
+            "time": "amc"
+        },
+        "SAFM": {
+            "estimate": -0.74,
+            "reported": -1.76,
+            "time": "bmo"
+        },
+        "SAGE": {
+            "estimate": -3.62,
+            "reported": -3.25,
+            "time": "bmo"
+        },
+        "SCOR": {
+            "estimate": -0.29,
+            "reported": -0.31,
+            "time": "amc"
+        },
+        "SERV": {
+            "estimate": 0.19,
+            "reported": 0.22,
+            "time": "bmo"
+        },
+        "SFE": {
+            "estimate": -0.39,
+            "reported": -0.03,
+            "time": "bmo"
+        },
+        "SHOO": {
+            "estimate": 0.39,
+            "reported": 0.39,
+            "time": "bmo"
+        },
+        "SNR": {
+            "estimate": 0.15,
+            "reported": -0.08,
+            "time": "bmo"
+        },
+        "SOHO": {
+            "estimate": 0.08,
+            "reported": -0.27,
+            "time": "bmo"
+        },
+        "SPPI": {
+            "estimate": -0.22,
+            "reported": -0.3,
+            "time": "amc"
+        },
+        "SRCL": {
+            "estimate": 0.7,
+            "reported": 0.72,
+            "time": "bmo"
+        },
+        "SRE": {
+            "estimate": 1.31,
+            "reported": 1.55,
+            "time": "bmo"
+        },
+        "STKL": {
+            "estimate": -0.09,
+            "reported": -0.06,
+            "time": "bmo"
+        },
+        "SWCH": {
+            "estimate": 0.05,
+            "reported": 0.04,
+            "time": "amc"
+        },
+        "SWN": {
+            "estimate": 0.1,
+            "reported": 0.18,
+            "time": "amc"
+        },
+        "TCDA": {
+            "estimate": -1.21,
+            "reported": -1.17,
+            "time": "amc"
+        },
+        "TCON": {
+            "estimate": -1.58,
+            "reported": -1.25,
+            "time": "amc"
+        },
+        "TD": {
+            "estimate": 1.26,
+            "reported": 1.26,
+            "time": "bmo"
+        },
+        "TGP": {
+            "estimate": 0.57,
+            "reported": 0.56,
+            "time": "bmo"
+        },
+        "TNK": {
+            "estimate": 2.37,
+            "reported": 2.45,
+            "time": "bmo"
+        },
+        "TOCA": {
+            "estimate": -0.55,
+            "reported": -0.44,
+            "time": "--"
+        },
+        "TPIC": {
+            "estimate": -0.02,
+            "reported": -0.02,
+            "time": "amc"
+        },
+        "TPRE": {
+            "estimate": 0.38,
+            "reported": 0.32,
+            "time": "amc"
+        },
+        "TRHC": {
+            "estimate": 0.04,
+            "reported": 0.13,
+            "time": "amc"
+        },
+        "TRS": {
+            "estimate": 0.39,
+            "reported": 0.31,
+            "time": "bmo"
+        },
+        "TSG": {
+            "estimate": 0.42,
+            "reported": 0.49,
+            "time": "bmo"
+        },
+        "TTD": {
+            "estimate": 1.19,
+            "reported": 1.49,
+            "time": "amc"
+        },
+        "TTI": {
+            "estimate": -0.01,
+            "reported": 0.03,
+            "time": "bmo"
+        },
+        "TUSK": {
+            "estimate": -0.66,
+            "reported": -0.58,
+            "time": "amc"
+        },
+        "USPH": {
+            "estimate": 0.68,
+            "reported": 0.64,
+            "time": "bmo"
+        },
+        "VMW": {
+            "estimate": 2.16,
+            "reported": 2.05,
+            "time": "amc"
+        },
+        "VRNA": {
+            "estimate": -1.12,
+            "reported": -0.72,
+            "time": "bmo"
+        },
+        "VRS": {
+            "estimate": 1.0,
+            "reported": 1.12,
+            "time": "bmo"
+        },
+        "VRTV": {
+            "estimate": 0.29,
+            "reported": 0.21,
+            "time": "bmo"
+        },
+        "WDAY": {
+            "estimate": 0.4,
+            "reported": 0.5,
+            "time": "amc"
+        },
+        "WES": {
+            "estimate": 0.45,
+            "reported": 0.62,
+            "time": "amc"
+        },
+        "WLL": {
+            "estimate": -0.44,
+            "reported": -0.22,
+            "time": "bmo"
+        },
+        "XLRN": {
+            "estimate": -0.32,
+            "reported": -0.44,
+            "time": "amc"
+        }
+    },
+    "2020-02-28": {
+        "AES": {
+            "estimate": 0.33,
+            "reported": 0.35,
+            "time": "bmo"
+        },
+        "BASFY": {
+            "estimate": 0.23,
+            "reported": 0.17,
+            "time": "--"
+        },
+        "CBMG": {
+            "estimate": -0.78,
+            "reported": -0.65,
+            "time": "amc"
+        },
+        "CKH": {
+            "estimate": 0.28,
+            "reported": -0.1,
+            "time": "--"
+        },
+        "CLNY": {
+            "estimate": 0.1,
+            "reported": -0.95,
+            "time": "bmo"
+        },
+        "E": {
+            "estimate": 0.51,
+            "reported": 0.33,
+            "time": "bmo"
+        },
+        "FL": {
+            "estimate": 1.58,
+            "reported": 1.63,
+            "time": "bmo"
+        },
+        "GLYC": {
+            "estimate": -0.35,
+            "reported": -0.34,
+            "time": "--"
+        },
+        "ICD": {
+            "estimate": -0.09,
+            "reported": -0.1,
+            "time": "bmo"
+        },
+        "INTT": {
+            "estimate": 0.08,
+            "reported": 0.1,
+            "time": "bmo"
+        },
+        "KMPH": {
+            "estimate": -0.14,
+            "reported": -0.18,
+            "time": "--"
+        },
+        "KVHI": {
+            "estimate": 0.01,
+            "reported": -0.03,
+            "time": "bmo"
+        },
+        "MGLN": {
+            "estimate": 0.96,
+            "reported": 1.24,
+            "time": "bmo"
+        },
+        "MRSN": {
+            "estimate": -0.38,
+            "reported": -0.34,
+            "time": "bmo"
+        },
+        "MTBC": {
+            "estimate": -0.06,
+            "reported": -0.12,
+            "time": "bmo"
+        },
+        "NH": {
+            "estimate": -0.06,
+            "reported": -0.04,
+            "time": "amc"
+        },
+        "NLNK": {
+            "estimate": -0.28,
+            "reported": -0.22,
+            "time": "--"
+        },
+        "RESI": {
+            "estimate": 0.03,
+            "reported": -0.47,
+            "time": "--"
+        },
+        "ROCK": {
+            "estimate": 0.59,
+            "reported": 0.62,
+            "time": "bmo"
+        },
+        "SGMO": {
+            "estimate": -0.31,
+            "reported": 0.04,
+            "time": "bmo"
+        },
+        "SMLP": {
+            "estimate": 0.06,
+            "reported": 0.17,
+            "time": "bmo"
+        },
+        "SPR": {
+            "estimate": 1.57,
+            "reported": 0.79,
+            "time": "bmo"
+        },
+        "STRA": {
+            "estimate": 2.09,
+            "reported": 2.13,
+            "time": "bmo"
+        },
+        "SUP": {
+            "estimate": -0.35,
+            "reported": -0.08,
+            "time": "bmo"
+        },
+        "SVC": {
+            "estimate": 0.91,
+            "reported": -0.09,
+            "time": "bmo"
+        },
+        "VGR": {
+            "estimate": 0.06,
+            "reported": 0.11,
+            "time": "bmo"
+        },
+        "VST": {
+            "estimate": 0.57,
+            "reported": 0.5,
+            "time": "bmo"
+        },
+        "W": {
+            "estimate": -2.65,
+            "reported": -2.8,
+            "time": "bmo"
+        }
+    },
+    "2020-03-02": {
+        "ALBO": {
+            "estimate": -1.58,
+            "reported": -0.57,
+            "time": "bmo"
+        },
+        "AMRC": {
+            "estimate": 0.39,
+            "reported": 0.46,
+            "time": "amc"
+        },
+        "ANAB": {
+            "estimate": -1.27,
+            "reported": -0.75,
+            "time": "--"
+        },
+        "APPF": {
+            "estimate": 0.03,
+            "reported": 0.12,
+            "time": "amc"
+        },
+        "ATSG": {
+            "estimate": 0.43,
+            "reported": 0.56,
+            "time": "amc"
+        },
+        "BBIO": {
+            "estimate": -0.7,
+            "reported": -0.62,
+            "time": "--"
+        },
+        "BGNE": {
+            "estimate": -4.84,
+            "reported": -6.39,
+            "time": "--"
+        },
+        "CFMS": {
+            "estimate": -0.1,
+            "reported": -0.08,
+            "time": "amc"
+        },
+        "CIR": {
+            "estimate": 0.82,
+            "reported": 0.82,
+            "time": "bmo"
+        },
+        "CORE": {
+            "estimate": 0.39,
+            "reported": 0.45,
+            "time": "bmo"
+        },
+        "CPTA": {
+            "estimate": 0.22,
+            "reported": 0.12,
+            "time": "amc"
+        },
+        "DHC": {
+            "estimate": 0.3,
+            "reported": -0.22,
+            "time": "bmo"
+        },
+        "EGRX": {
+            "estimate": 0.35,
+            "reported": 0.48,
+            "time": "bmo"
+        },
+        "EPRT": {
+            "estimate": 0.31,
+            "reported": 0.18,
+            "time": "bmo"
+        },
+        "EQX": {
+            "estimate": 0.23,
+            "reported": 0.15,
+            "time": "bmo"
+        },
+        "EVRI": {
+            "estimate": 0.08,
+            "reported": 0.02,
+            "time": "amc"
+        },
+        "FATE": {
+            "estimate": -0.39,
+            "reported": -0.37,
+            "time": "amc"
+        },
+        "FGEN": {
+            "estimate": -0.62,
+            "reported": -1.12,
+            "time": "amc"
+        },
+        "FOE": {
+            "estimate": 0.28,
+            "reported": 0.17,
+            "time": "amc"
+        },
+        "FOLD": {
+            "estimate": -0.26,
+            "reported": -0.35,
+            "time": "bmo"
+        },
+        "GNMK": {
+            "estimate": -0.16,
+            "reported": -0.17,
+            "time": "amc"
+        },
+        "GORO": {
+            "estimate": 0.08,
+            "reported": 0.0,
+            "time": "--"
+        },
+        "GPMT": {
+            "estimate": 0.37,
+            "reported": 0.34,
+            "time": "amc"
+        },
+        "GSKY": {
+            "estimate": 0.13,
+            "reported": 0.12,
+            "time": "amc"
+        },
+        "GSM": {
+            "estimate": -0.23,
+            "reported": -0.32,
+            "time": "amc"
+        },
+        "GTT": {
+            "estimate": -0.21,
+            "reported": -0.21,
+            "time": "bmo"
+        },
+        "HCCI": {
+            "estimate": 0.32,
+            "reported": 0.27,
+            "time": "amc"
+        },
+        "HRTX": {
+            "estimate": -0.58,
+            "reported": -0.65,
+            "time": "--"
+        },
+        "IPAR": {
+            "estimate": 0.26,
+            "reported": 0.26,
+            "time": "amc"
+        },
+        "IPI": {
+            "estimate": 0.05,
+            "reported": 0.02,
+            "time": "amc"
+        },
+        "ITCI": {
+            "estimate": -0.79,
+            "reported": -0.74,
+            "time": "bmo"
+        },
+        "JD": {
+            "estimate": 0.07,
+            "reported": 0.08,
+            "time": "bmo"
+        },
+        "KLDO": {
+            "estimate": -0.7,
+            "reported": -0.65,
+            "time": "--"
+        },
+        "KWR": {
+            "estimate": 1.29,
+            "reported": 1.34,
+            "time": "amc"
+        },
+        "LJPC": {
+            "estimate": -0.98,
+            "reported": -0.93,
+            "time": "--"
+        },
+        "LKSD": {
+            "estimate": -0.28,
+            "reported": -1.03,
+            "time": "--"
+        },
+        "LVGO": {
+            "estimate": -0.06,
+            "reported": 0.02,
+            "time": "amc"
+        },
+        "MAXR": {
+            "estimate": -0.5,
+            "reported": -0.63,
+            "time": "amc"
+        },
+        "MCRB": {
+            "estimate": -0.26,
+            "reported": -0.25,
+            "time": "bmo"
+        },
+        "MDRX": {
+            "estimate": 0.18,
+            "reported": 0.17,
+            "time": "amc"
+        },
+        "NCSM": {
+            "estimate": -0.04,
+            "reported": -0.04,
+            "time": "amc"
+        },
+        "NTGN": {
+            "estimate": -0.65,
+            "reported": -0.63,
+            "time": "--"
+        },
+        "NWPX": {
+            "estimate": 0.99,
+            "reported": 1.23,
+            "time": "amc"
+        },
+        "OMER": {
+            "estimate": -0.33,
+            "reported": -0.21,
+            "time": "amc"
+        },
+        "OXFD": {
+            "estimate": -0.11,
+            "reported": -0.06,
+            "time": "bmo"
+        },
+        "PEGI": {
+            "estimate": 0.25,
+            "reported": 0.54,
+            "time": "--"
+        },
+        "PGEN": {
+            "estimate": -0.25,
+            "reported": -0.25,
+            "time": "amc"
+        },
+        "PI": {
+            "estimate": -0.01,
+            "reported": 0.03,
+            "time": "amc"
+        },
+        "PTCT": {
+            "estimate": -0.53,
+            "reported": -1.15,
+            "time": "amc"
+        },
+        "QURE": {
+            "estimate": -0.78,
+            "reported": -0.97,
+            "time": "--"
+        },
+        "RYTM": {
+            "estimate": -0.91,
+            "reported": -0.78,
+            "time": "--"
+        },
+        "SQM": {
+            "estimate": 0.26,
+            "reported": 0.25,
+            "time": "amc"
+        },
+        "STNE": {
+            "estimate": 0.22,
+            "reported": 0.23,
+            "time": "amc"
+        },
+        "STRL": {
+            "estimate": 0.26,
+            "reported": 0.22,
+            "time": "amc"
+        },
+        "TGLS": {
+            "estimate": 0.18,
+            "reported": 0.16,
+            "time": "bmo"
+        },
+        "TLRY": {
+            "estimate": -0.34,
+            "reported": -0.62,
+            "time": "amc"
+        },
+        "TMDX": {
+            "estimate": -0.39,
+            "reported": -0.43,
+            "time": "amc"
+        },
+        "URGN": {
+            "estimate": -1.69,
+            "reported": -1.86,
+            "time": "bmo"
+        },
+        "VRRM": {
+            "estimate": 0.16,
+            "reported": 0.17,
+            "time": "amc"
+        },
+        "WHF": {
+            "estimate": 0.36,
+            "reported": 0.39,
+            "time": "bmo"
+        },
+        "WIFI": {
+            "estimate": -0.12,
+            "reported": -0.12,
+            "time": "amc"
+        },
+        "WSC": {
+            "estimate": 0.12,
+            "reported": 0.15,
+            "time": "bmo"
+        },
+        "WVE": {
+            "estimate": -1.48,
+            "reported": -1.65,
+            "time": "bmo"
+        },
+        "XRAY": {
+            "estimate": 0.74,
+            "reported": 0.73,
+            "time": "bmo"
+        },
+        "ZGNX": {
+            "estimate": -1.1,
+            "reported": -1.22,
+            "time": "amc"
+        },
+        "ZIOP": {
+            "estimate": -0.07,
+            "reported": -0.09,
+            "time": "amc"
+        },
+        "ZYME": {
+            "estimate": -0.84,
+            "reported": -1.66,
+            "time": "--"
+        }
+    },
+    "2020-03-03": {
+        "AFI": {
+            "estimate": -0.85,
+            "reported": -1.05,
+            "time": "bmo"
+        },
+        "AJX": {
+            "estimate": 0.41,
+            "reported": 0.31,
+            "time": "amc"
+        },
+        "AMBA": {
+            "estimate": 0.12,
+            "reported": 0.14,
+            "time": "amc"
+        },
+        "ARPO": {
+            "estimate": -0.12,
+            "reported": "--",
+            "time": "--"
+        },
+        "ASTE": {
+            "estimate": 0.54,
+            "reported": 0.4,
+            "time": "bmo"
+        },
+        "ATRS": {
+            "estimate": 0.0,
+            "reported": 0.03,
+            "time": "bmo"
+        },
+        "ATTO": {
+            "estimate": 0.06,
+            "reported": -0.19,
+            "time": "amc"
+        },
+        "AUTL": {
+            "estimate": -0.71,
+            "reported": -0.93,
+            "time": "bmo"
+        },
+        "AVAV": {
+            "estimate": 0.17,
+            "reported": -0.01,
+            "time": "amc"
+        },
+        "AZO": {
+            "estimate": 11.87,
+            "reported": 12.39,
+            "time": "bmo"
+        },
+        "BIOL": {
+            "estimate": -0.06,
+            "reported": "--",
+            "time": "--"
+        },
+        "BNFT": {
+            "estimate": -0.06,
+            "reported": 0.06,
+            "time": "amc"
+        },
+        "BRFS": {
+            "estimate": 0.17,
+            "reported": "--",
+            "time": "bmo"
+        },
+        "CDLX": {
+            "estimate": 0.08,
+            "reported": 0.18,
+            "time": "amc"
+        },
+        "CNR": {
+            "estimate": -0.05,
+            "reported": 0.11,
+            "time": "amc"
+        },
+        "CVET": {
+            "estimate": 0.13,
+            "reported": 0.18,
+            "time": "amc"
+        },
+        "CYTK": {
+            "estimate": -0.42,
+            "reported": -0.52,
+            "time": "amc"
+        },
+        "DRRX": {
+            "estimate": -0.02,
+            "reported": -0.02,
+            "time": "amc"
+        },
+        "FOXF": {
+            "estimate": 0.63,
+            "reported": 0.65,
+            "time": "amc"
+        },
+        "GRBK": {
+            "estimate": 0.24,
+            "reported": 0.31,
+            "time": "amc"
+        },
+        "HALL": {
+            "estimate": 0.29,
+            "reported": "--",
+            "time": "--"
+        },
+        "HIIQ": {
+            "estimate": 2.36,
+            "reported": 2.48,
+            "time": "amc"
+        },
+        "HPE": {
+            "estimate": 0.43,
+            "reported": 0.44,
+            "time": "amc"
+        },
+        "HRZN": {
+            "estimate": 0.33,
+            "reported": 0.43,
+            "time": "amc"
+        },
+        "IGT": {
+            "estimate": 0.26,
+            "reported": 0.31,
+            "time": "bmo"
+        },
+        "INFI": {
+            "estimate": -0.19,
+            "reported": -0.2,
+            "time": "amc"
+        },
+        "INSW": {
+            "estimate": 1.19,
+            "reported": 1.32,
+            "time": "bmo"
+        },
+        "INWK": {
+            "estimate": 0.04,
+            "reported": "--",
+            "time": "--"
+        },
+        "ITMR": {
+            "estimate": -0.1,
+            "reported": -0.03,
+            "time": "bmo"
+        },
+        "JWN": {
+            "estimate": 1.48,
+            "reported": 1.42,
+            "time": "amc"
+        },
+        "KSS": {
+            "estimate": 1.88,
+            "reported": 1.99,
+            "time": "bmo"
+        },
+        "LTM": {
+            "estimate": 0.24,
+            "reported": "--",
+            "time": "amc"
+        },
+        "MGTA": {
+            "estimate": -0.58,
+            "reported": -0.59,
+            "time": "--"
+        },
+        "MNLO": {
+            "estimate": -0.83,
+            "reported": -0.89,
+            "time": "--"
+        },
+        "MRCC": {
+            "estimate": 0.35,
+            "reported": 0.37,
+            "time": "amc"
+        },
+        "MVIS": {
+            "estimate": -0.03,
+            "reported": "--",
+            "time": "--"
+        },
+        "MYE": {
+            "estimate": 0.12,
+            "reported": 0.12,
+            "time": "bmo"
+        },
+        "NIO": {
+            "estimate": -0.36,
+            "reported": "--",
+            "time": "--"
+        },
+        "OSPN": {
+            "estimate": 0.16,
+            "reported": 0.24,
+            "time": "amc"
+        },
+        "PKDC": {
+            "estimate": -0.02,
+            "reported": -0.14,
+            "time": "amc"
+        },
+        "PRMW.": {
+            "estimate": 0.05,
+            "reported": "--",
+            "time": "--"
+        },
+        "PROF": {
+            "estimate": -0.36,
+            "reported": -0.33,
+            "time": "amc"
+        },
+        "QTT": {
+            "estimate": -0.28,
+            "reported": "--",
+            "time": "--"
+        },
+        "RCUS": {
+            "estimate": -0.49,
+            "reported": -0.38,
+            "time": "--"
+        },
+        "ROST": {
+            "estimate": 1.26,
+            "reported": 1.28,
+            "time": "amc"
+        },
+        "SCM": {
+            "estimate": 0.33,
+            "reported": 0.37,
+            "time": "bmo"
+        },
+        "SE": {
+            "estimate": -0.62,
+            "reported": -0.53,
+            "time": "bmo"
+        },
+        "SHLO": {
+            "estimate": 0.03,
+            "reported": -0.12,
+            "time": "bmo"
+        },
+        "SMLR": {
+            "estimate": 0.29,
+            "reported": 0.35,
+            "time": "amc"
+        },
+        "SNDX": {
+            "estimate": -0.46,
+            "reported": -0.44,
+            "time": "amc"
+        },
+        "SRRA": {
+            "estimate": -3.17,
+            "reported": -2.51,
+            "time": "bmo"
+        },
+        "STIM": {
+            "estimate": -0.45,
+            "reported": -0.41,
+            "time": "bmo"
+        },
+        "TGT": {
+            "estimate": 1.66,
+            "reported": 1.69,
+            "time": "bmo"
+        },
+        "TGTX": {
+            "estimate": -0.45,
+            "reported": -0.38,
+            "time": "bmo"
+        },
+        "TRWH": {
+            "estimate": 0.4,
+            "reported": 0.42,
+            "time": "--"
+        },
+        "URBN": {
+            "estimate": 0.63,
+            "reported": 0.5,
+            "time": "amc"
+        },
+        "USWS": {
+            "estimate": -0.44,
+            "reported": -0.74,
+            "time": "amc"
+        },
+        "VEC": {
+            "estimate": 0.91,
+            "reported": 0.91,
+            "time": "amc"
+        },
+        "VEEV": {
+            "estimate": 0.52,
+            "reported": 0.54,
+            "time": "amc"
+        },
+        "VVUS": {
+            "estimate": -0.59,
+            "reported": -0.61,
+            "time": "amc"
+        },
+        "VYGR": {
+            "estimate": -0.81,
+            "reported": -0.34,
+            "time": "amc"
+        },
+        "YEXT": {
+            "estimate": -0.15,
+            "reported": -0.12,
+            "time": "amc"
+        }
+    },
+    "2020-03-04": {
+        "ABM": {
+            "estimate": 0.31,
+            "reported": 0.39,
+            "time": "amc"
+        },
+        "ADVM": {
+            "estimate": -0.3,
+            "reported": "--",
+            "time": "--"
+        },
+        "AEO": {
+            "estimate": 0.36,
+            "reported": 0.37,
+            "time": "amc"
+        },
+        "AGS": {
+            "estimate": 0.02,
+            "reported": 0.04,
+            "time": "amc"
+        },
+        "AMAG": {
+            "estimate": -0.34,
+            "reported": -0.35,
+            "time": "bmo"
+        },
+        "ANF": {
+            "estimate": 1.23,
+            "reported": 1.31,
+            "time": "bmo"
+        },
+        "ARDX": {
+            "estimate": -0.34,
+            "reported": "--",
+            "time": "--"
+        },
+        "ASMB": {
+            "estimate": -1.01,
+            "reported": -0.99,
+            "time": "--"
+        },
+        "AXNX": {
+            "estimate": -0.64,
+            "reported": -0.75,
+            "time": "amc"
+        },
+        "BF.B": {
+            "estimate": 0.5,
+            "reported": 0.48,
+            "time": "bmo"
+        },
+        "BKCC": {
+            "estimate": 0.14,
+            "reported": 0.14,
+            "time": "amc"
+        },
+        "BLDP": {
+            "estimate": -0.04,
+            "reported": -0.04,
+            "time": "amc"
+        },
+        "BNTGY": {
+            "estimate": 0.13,
+            "reported": 0.16,
+            "time": "--"
+        },
+        "BTE": {
+            "estimate": 0.05,
+            "reported": 0.04,
+            "time": "bmo"
+        },
+        "CCAP": {
+            "estimate": 0.48,
+            "reported": 0.4,
+            "time": "amc"
+        },
+        "CCRN": {
+            "estimate": 0.06,
+            "reported": 0.07,
+            "time": "amc"
+        },
+        "CDTX": {
+            "estimate": -0.29,
+            "reported": -0.42,
+            "time": "--"
+        },
+        "CECE": {
+            "estimate": 0.14,
+            "reported": 0.27,
+            "time": "bmo"
+        },
+        "CLLS": {
+            "estimate": -0.84,
+            "reported": -0.88,
+            "time": "amc"
+        },
+        "CMTL": {
+            "estimate": 0.13,
+            "reported": 0.14,
+            "time": "amc"
+        },
+        "CPB": {
+            "estimate": 0.65,
+            "reported": 0.72,
+            "time": "bmo"
+        },
+        "CULP": {
+            "estimate": 0.13,
+            "reported": 0.48,
+            "time": "amc"
+        },
+        "DLTR": {
+            "estimate": 1.76,
+            "reported": 1.79,
+            "time": "bmo"
+        },
+        "DSGX": {
+            "estimate": 0.12,
+            "reported": 0.13,
+            "time": "amc"
+        },
+        "DUO": {
+            "estimate": 0.23,
+            "reported": "--",
+            "time": "--"
+        },
+        "EGLE": {
+            "estimate": -0.08,
+            "reported": -0.14,
+            "time": "amc"
+        },
+        "EVOK": {
+            "estimate": -0.06,
+            "reported": "--",
+            "time": "--"
+        },
+        "FNJN": {
+            "estimate": -0.27,
+            "reported": -0.22,
+            "time": "amc"
+        },
+        "GALT": {
+            "estimate": -0.06,
+            "reported": "--",
+            "time": "--"
+        },
+        "GMRE": {
+            "estimate": 0.2,
+            "reported": 0.21,
+            "time": "amc"
+        },
+        "GRP.U": {
+            "estimate": 0.69,
+            "reported": 0.69,
+            "time": "amc"
+        },
+        "GWRE": {
+            "estimate": 0.13,
+            "reported": 0.21,
+            "time": "amc"
+        },
+        "GWRS": {
+            "estimate": 0.02,
+            "reported": -0.01,
+            "time": "bmo"
+        },
+        "HDSN": {
+            "estimate": -0.13,
+            "reported": -0.25,
+            "time": "amc"
+        },
+        "IDRA": {
+            "estimate": -0.33,
+            "reported": "--",
+            "time": "--"
+        },
+        "INXN": {
+            "estimate": 0.17,
+            "reported": "--",
+            "time": "--"
+        },
+        "ITRN": {
+            "estimate": 0.36,
+            "reported": 0.31,
+            "time": "bmo"
+        },
+        "JILL": {
+            "estimate": -0.11,
+            "reported": -0.05,
+            "time": "bmo"
+        },
+        "JW.A": {
+            "estimate": 0.52,
+            "reported": 0.68,
+            "time": "bmo"
+        },
+        "KIDS": {
+            "estimate": -0.25,
+            "reported": -0.29,
+            "time": "amc"
+        },
+        "LPCN": {
+            "estimate": -0.17,
+            "reported": "--",
+            "time": "--"
+        },
+        "LXFR": {
+            "estimate": 0.24,
+            "reported": 0.22,
+            "time": "amc"
+        },
+        "MEET": {
+            "estimate": 0.16,
+            "reported": "--",
+            "time": "--"
+        },
+        "MRVL": {
+            "estimate": 0.16,
+            "reported": 0.17,
+            "time": "amc"
+        },
+        "MTLS": {
+            "estimate": 0.09,
+            "reported": 0.03,
+            "time": "bmo"
+        },
+        "MYRG": {
+            "estimate": 0.55,
+            "reported": 0.76,
+            "time": "amc"
+        },
+        "NAV": {
+            "estimate": -0.38,
+            "reported": -0.33,
+            "time": "bmo"
+        },
+        "NEWT": {
+            "estimate": 0.72,
+            "reported": 0.68,
+            "time": "amc"
+        },
+        "NEXT": {
+            "estimate": -0.1,
+            "reported": "--",
+            "time": "--"
+        },
+        "NFE": {
+            "estimate": -0.23,
+            "reported": -0.3,
+            "time": "amc"
+        },
+        "OMI": {
+            "estimate": 0.22,
+            "reported": 0.24,
+            "time": "bmo"
+        },
+        "OPNT": {
+            "estimate": 0.31,
+            "reported": 0.2,
+            "time": "amc"
+        },
+        "OTCM": {
+            "estimate": 0.34,
+            "reported": 0.32,
+            "time": "amc"
+        },
+        "PFIE": {
+            "estimate": 0.02,
+            "reported": "--",
+            "time": "--"
+        },
+        "PING": {
+            "estimate": 0.09,
+            "reported": 0.14,
+            "time": "amc"
+        },
+        "PLAB": {
+            "estimate": 0.16,
+            "reported": 0.16,
+            "time": "bmo"
+        },
+        "PMTS": {
+            "estimate": -0.27,
+            "reported": "--",
+            "time": "--"
+        },
+        "PNTG": {
+            "estimate": 0.16,
+            "reported": 0.16,
+            "time": "amc"
+        },
+        "PPD": {
+            "estimate": 0.26,
+            "reported": 0.33,
+            "time": "amc"
+        },
+        "QES": {
+            "estimate": -0.25,
+            "reported": -0.24,
+            "time": "amc"
+        },
+        "QUMU": {
+            "estimate": -0.15,
+            "reported": -0.15,
+            "time": "amc"
+        },
+        "RCMT": {
+            "estimate": 0.15,
+            "reported": 0.08,
+            "time": "bmo"
+        },
+        "RDHL": {
+            "estimate": -0.32,
+            "reported": -0.3,
+            "time": "bmo"
+        },
+        "REPH": {
+            "estimate": -0.3,
+            "reported": "--",
+            "time": "bmo"
+        },
+        "REVG": {
+            "estimate": -0.02,
+            "reported": -0.04,
+            "time": "amc"
+        },
+        "RYI": {
+            "estimate": 0.13,
+            "reported": 0.3,
+            "time": "amc"
+        },
+        "SBOW": {
+            "estimate": 1.58,
+            "reported": 0.53,
+            "time": "amc"
+        },
+        "SID": {
+            "estimate": 0.16,
+            "reported": "--",
+            "time": "amc"
+        },
+        "SLNO": {
+            "estimate": -0.15,
+            "reported": -0.17,
+            "time": "--"
+        },
+        "SPLK": {
+            "estimate": 0.96,
+            "reported": 0.96,
+            "time": "amc"
+        },
+        "TAC": {
+            "estimate": 0.06,
+            "reported": 0.09,
+            "time": "bmo"
+        },
+        "TPVG": {
+            "estimate": 0.4,
+            "reported": 0.45,
+            "time": "amc"
+        },
+        "TTEC": {
+            "estimate": 0.64,
+            "reported": 0.65,
+            "time": "amc"
+        },
+        "TWI": {
+            "estimate": -0.09,
+            "reported": -0.4,
+            "time": "bmo"
+        },
+        "UFPT": {
+            "estimate": 0.6,
+            "reported": 0.77,
+            "time": "--"
+        },
+        "VAPO": {
+            "estimate": -0.72,
+            "reported": -0.6,
+            "time": "amc"
+        },
+        "VERI": {
+            "estimate": -0.38,
+            "reported": -0.33,
+            "time": "amc"
+        },
+        "VNET": {
+            "estimate": 0.06,
+            "reported": -0.02,
+            "time": "amc"
+        },
+        "VOLT": {
+            "estimate": -0.26,
+            "reported": "--",
+            "time": "--"
+        },
+        "VTNR": {
+            "estimate": -0.04,
+            "reported": "--",
+            "time": "--"
+        },
+        "WMC": {
+            "estimate": 0.3,
+            "reported": 0.3,
+            "time": "amc"
+        },
+        "WOW": {
+            "estimate": 0.21,
+            "reported": 0.08,
+            "time": "amc"
+        },
+        "WTI": {
+            "estimate": 0.01,
+            "reported": 0.17,
+            "time": "amc"
+        },
+        "ZM": {
+            "estimate": 0.07,
+            "reported": 0.15,
+            "time": "amc"
+        }
+    },
+    "2020-03-05": {
+        "ABUS": {
+            "estimate": -0.37,
+            "reported": -0.36,
+            "time": "bmo"
+        },
+        "ACER": {
+            "estimate": -0.51,
+            "reported": "--",
+            "time": "--"
+        },
+        "ACRX": {
+            "estimate": -0.22,
+            "reported": "--",
+            "time": "--"
+        },
+        "ADT": {
+            "estimate": 0.22,
+            "reported": -0.03,
+            "time": "amc"
+        },
+        "AIRI": {
+            "estimate": 0.01,
+            "reported": "--",
+            "time": "--"
+        },
+        "ALNA": {
+            "estimate": -0.55,
+            "reported": "--",
+            "time": "--"
+        },
+        "ALPE": {
+            "estimate": -0.07,
+            "reported": "--",
+            "time": "--"
+        },
+        "AMPY": {
+            "estimate": 0.16,
+            "reported": 0.15,
+            "time": "bmo"
+        },
+        "AOBC": {
+            "estimate": 0.25,
+            "reported": 0.13,
+            "time": "amc"
+        },
+        "APRE": {
+            "estimate": -0.39,
+            "reported": "--",
+            "time": "--"
+        },
+        "AQB": {
+            "estimate": -0.1,
+            "reported": "--",
+            "time": "--"
+        },
+        "AQMS": {
+            "estimate": -0.13,
+            "reported": "--",
+            "time": "--"
+        },
+        "ARAV": {
+            "estimate": -0.48,
+            "reported": "--",
+            "time": "--"
+        },
+        "ASPS": {
+            "estimate": 0.48,
+            "reported": 0.26,
+            "time": "amc"
+        },
+        "AUPH": {
+            "estimate": -0.21,
+            "reported": "--",
+            "time": "amc"
+        },
+        "AUTO": {
+            "estimate": 0.04,
+            "reported": "--",
+            "time": "--"
+        },
+        "BAX": {
+            "estimate": 0.88,
+            "reported": "--",
+            "time": "--"
+        },
+        "BCRX": {
+            "estimate": -0.25,
+            "reported": -0.02,
+            "time": "bmo"
+        },
+        "BJ": {
+            "estimate": 0.4,
+            "reported": 0.4,
+            "time": "bmo"
+        },
+        "BNGO": {
+            "estimate": -0.22,
+            "reported": "--",
+            "time": "amc"
+        },
+        "BRFH": {
+            "estimate": -0.01,
+            "reported": "--",
+            "time": "--"
+        },
+        "BURL": {
+            "estimate": 3.22,
+            "reported": 3.25,
+            "time": "bmo"
+        },
+        "CALA": {
+            "estimate": -0.39,
+            "reported": "--",
+            "time": "--"
+        },
+        "CBAY": {
+            "estimate": -0.39,
+            "reported": "--",
+            "time": "--"
+        },
+        "CERC": {
+            "estimate": -0.01,
+            "reported": "--",
+            "time": "--"
+        },
+        "CHUY": {
+            "estimate": 0.12,
+            "reported": 0.17,
+            "time": "amc"
+        },
+        "CIEN": {
+            "estimate": 0.38,
+            "reported": 0.52,
+            "time": "bmo"
+        },
+        "CLDX": {
+            "estimate": -0.93,
+            "reported": "--",
+            "time": "--"
+        },
+        "CLMT": {
+            "estimate": -0.47,
+            "reported": -0.48,
+            "time": "bmo"
+        },
+        "CLPR": {
+            "estimate": 0.12,
+            "reported": "--",
+            "time": "--"
+        },
+        "CLUB": {
+            "estimate": -0.1,
+            "reported": "--",
+            "time": "--"
+        },
+        "CLXT": {
+            "estimate": -0.39,
+            "reported": -0.37,
+            "time": "bmo"
+        },
+        "CMD": {
+            "estimate": 0.68,
+            "reported": 0.61,
+            "time": "bmo"
+        },
+        "CNQ": {
+            "estimate": 0.54,
+            "reported": 0.44,
+            "time": "bmo"
+        },
+        "CNTG": {
+            "estimate": -0.16,
+            "reported": "--",
+            "time": "--"
+        },
+        "COO": {
+            "estimate": 2.71,
+            "reported": 2.69,
+            "time": "amc"
+        },
+        "COST": {
+            "estimate": 2.07,
+            "reported": 2.1,
+            "time": "amc"
+        },
+        "CPG": {
+            "estimate": 0.07,
+            "reported": 0.07,
+            "time": "bmo"
+        },
+        "CRD.B": {
+            "estimate": 0.12,
+            "reported": 0.14,
+            "time": "amc"
+        },
+        "CRRT": {
+            "estimate": -0.8,
+            "reported": "--",
+            "time": "--"
+        },
+        "CRVS": {
+            "estimate": -0.33,
+            "reported": -0.38,
+            "time": "amc"
+        },
+        "CSU": {
+            "estimate": -0.59,
+            "reported": "--",
+            "time": "--"
+        },
+        "CTSO": {
+            "estimate": -0.17,
+            "reported": -0.13,
+            "time": "amc"
+        },
+        "CTXR": {
+            "estimate": -0.14,
+            "reported": "--",
+            "time": "--"
+        },
+        "CVGW": {
+            "estimate": 0.62,
+            "reported": "--",
+            "time": "--"
+        },
+        "CYRX": {
+            "estimate": -0.08,
+            "reported": -0.05,
+            "time": "amc"
+        },
+        "DCI": {
+            "estimate": 0.47,
+            "reported": 0.5,
+            "time": "bmo"
+        },
+        "DESP": {
+            "estimate": -0.07,
+            "reported": 0.01,
+            "time": "bmo"
+        },
+        "DNN": {
+            "estimate": -0.01,
+            "reported": 0.0,
+            "time": "amc"
+        },
+        "DSSI": {
+            "estimate": 0.94,
+            "reported": 0.75,
+            "time": "bmo"
+        },
+        "DZSI": {
+            "estimate": 0.16,
+            "reported": -0.11,
+            "time": "amc"
+        },
+        "ERII": {
+            "estimate": -0.02,
+            "reported": -0.01,
+            "time": "amc"
+        },
+        "ETON": {
+            "estimate": -0.29,
+            "reported": -0.15,
+            "time": "amc"
+        },
+        "EYPT": {
+            "estimate": -0.12,
+            "reported": -0.09,
+            "time": "bmo"
+        },
+        "FIZZ": {
+            "estimate": 0.47,
+            "reported": 0.57,
+            "time": "--"
+        },
+        "FLXN": {
+            "estimate": -1.01,
+            "reported": "--",
+            "time": "--"
+        },
+        "FNKO": {
+            "estimate": 0.15,
+            "reported": 0.18,
+            "time": "amc"
+        },
+        "FULC": {
+            "estimate": -0.84,
+            "reported": -0.71,
+            "time": "bmo"
+        },
+        "GDP": {
+            "estimate": 0.21,
+            "reported": 0.23,
+            "time": "bmo"
+        },
+        "GERN": {
+            "estimate": -0.2,
+            "reported": "--",
+            "time": "--"
+        },
+        "GGAL": {
+            "estimate": 1.12,
+            "reported": "--",
+            "time": "--"
+        },
+        "GMS": {
+            "estimate": 0.49,
+            "reported": 0.52,
+            "time": "bmo"
+        },
+        "GPL": {
+            "estimate": -0.04,
+            "reported": "--",
+            "time": "--"
+        },
+        "GRFS": {
+            "estimate": 0.31,
+            "reported": "--",
+            "time": "--"
+        },
+        "GSHD": {
+            "estimate": 0.07,
+            "reported": "--",
+            "time": "--"
+        },
+        "GSL": {
+            "estimate": 0.32,
+            "reported": "--",
+            "time": "bmo"
+        },
+        "HABT": {
+            "estimate": 0.02,
+            "reported": "--",
+            "time": "--"
+        },
+        "HCI": {
+            "estimate": 0.91,
+            "reported": 0.76,
+            "time": "amc"
+        },
+        "HRB": {
+            "estimate": -0.54,
+            "reported": -0.59,
+            "time": "amc"
+        },
+        "HTGM": {
+            "estimate": -0.11,
+            "reported": "--",
+            "time": "--"
+        },
+        "ICAGY": {
+            "estimate": 0.55,
+            "reported": "--",
+            "time": "--"
+        },
+        "IGMS": {
+            "estimate": -0.36,
+            "reported": "--",
+            "time": "--"
+        },
+        "IMAC": {
+            "estimate": -0.03,
+            "reported": "--",
+            "time": "--"
+        },
+        "IMMR": {
+            "estimate": 0.09,
+            "reported": 0.1,
+            "time": "amc"
+        },
+        "INVE": {
+            "estimate": -0.13,
+            "reported": "--",
+            "time": "--"
+        },
+        "IOTS": {
+            "estimate": 0.01,
+            "reported": "--",
+            "time": "--"
+        },
+        "JMDA": {
+            "estimate": -0.2,
+            "reported": "--",
+            "time": "--"
+        },
+        "JOBS": {
+            "estimate": 0.66,
+            "reported": "--",
+            "time": "--"
+        },
+        "JYNT": {
+            "estimate": 0.08,
+            "reported": 0.09,
+            "time": "amc"
+        },
+        "KDMN": {
+            "estimate": -0.14,
+            "reported": -0.09,
+            "time": "--"
+        },
+        "KR": {
+            "estimate": 0.56,
+            "reported": 0.57,
+            "time": "bmo"
+        },
+        "KRTX": {
+            "estimate": -0.57,
+            "reported": "--",
+            "time": "--"
+        },
+        "KTB": {
+            "estimate": 0.9,
+            "reported": 0.97,
+            "time": "bmo"
+        },
+        "LLEX": {
+            "estimate": -0.08,
+            "reported": "--",
+            "time": "--"
+        },
+        "LOCO": {
+            "estimate": 0.15,
+            "reported": 0.18,
+            "time": "amc"
+        },
+        "LONE": {
+            "estimate": -0.18,
+            "reported": "--",
+            "time": "--"
+        },
+        "LUNA": {
+            "estimate": 0.05,
+            "reported": 0.07,
+            "time": "amc"
+        },
+        "MBRX": {
+            "estimate": -0.12,
+            "reported": "--",
+            "time": "--"
+        },
+        "MEI": {
+            "estimate": 0.92,
+            "reported": 1.05,
+            "time": "bmo"
+        },
+        "MR": {
+            "estimate": 0.39,
+            "reported": 0.89,
+            "time": "amc"
+        },
+        "MYO": {
+            "estimate": -4.48,
+            "reported": "--",
+            "time": "--"
+        },
+        "NAVB": {
+            "estimate": -0.12,
+            "reported": "--",
+            "time": "--"
+        },
+        "NBEV": {
+            "estimate": -0.08,
+            "reported": "--",
+            "time": "--"
+        },
+        "NBSE": {
+            "estimate": -0.36,
+            "reported": "--",
+            "time": "--"
+        },
+        "NCNA": {
+            "estimate": -0.21,
+            "reported": "--",
+            "time": "--"
+        },
+        "NLTX": {
+            "estimate": -0.54,
+            "reported": "--",
+            "time": "--"
+        },
+        "NVZMY": {
+            "estimate": 0.45,
+            "reported": "--",
+            "time": "--"
+        },
+        "OBSV": {
+            "estimate": -0.58,
+            "reported": -0.48,
+            "time": "bmo"
+        },
+        "OCUL": {
+            "estimate": -0.44,
+            "reported": "--",
+            "time": "--"
+        },
+        "OKTA": {
+            "estimate": -0.05,
+            "reported": -0.01,
+            "time": "amc"
+        },
+        "ONCY": {
+            "estimate": -0.11,
+            "reported": -0.19,
+            "time": "amc"
+        },
+        "OOMA": {
+            "estimate": 0.01,
+            "reported": 0.04,
+            "time": "amc"
+        },
+        "OPCH": {
+            "estimate": -0.02,
+            "reported": 0.0,
+            "time": "bmo"
+        },
+        "OPTN": {
+            "estimate": -0.67,
+            "reported": -0.58,
+            "time": "bmo"
+        },
+        "OVID": {
+            "estimate": -0.43,
+            "reported": "--",
+            "time": "--"
+        },
+        "PCTI": {
+            "estimate": 0.12,
+            "reported": 0.16,
+            "time": "amc"
+        },
+        "PDSB": {
+            "estimate": -1.0,
+            "reported": "--",
+            "time": "--"
+        },
+        "PGNY": {
+            "estimate": 0.02,
+            "reported": 0.01,
+            "time": "amc"
+        },
+        "PHGUF": {
+            "estimate": 0.01,
+            "reported": 0.02,
+            "time": "bmo"
+        },
+        "PLSE": {
+            "estimate": -0.55,
+            "reported": "--",
+            "time": "--"
+        },
+        "PLUG": {
+            "estimate": -0.06,
+            "reported": -0.06,
+            "time": "bmo"
+        },
+        "PZG": {
+            "estimate": -0.02,
+            "reported": "--",
+            "time": "--"
+        },
+        "RANJY": {
+            "estimate": 0.64,
+            "reported": "--",
+            "time": "--"
+        },
+        "RCKT": {
+            "estimate": -0.56,
+            "reported": -0.39,
+            "time": "--"
+        },
+        "REGI": {
+            "estimate": 0.02,
+            "reported": "--",
+            "time": "amc"
+        },
+        "SCSG": {
+            "estimate": 0.18,
+            "reported": "--",
+            "time": "--"
+        },
+        "SEEL": {
+            "estimate": -0.16,
+            "reported": "--",
+            "time": "--"
+        },
+        "SGRY": {
+            "estimate": 0.12,
+            "reported": 0.1,
+            "time": "bmo"
+        },
+        "SMSI": {
+            "estimate": 0.07,
+            "reported": 0.08,
+            "time": "amc"
+        },
+        "SPKE": {
+            "estimate": 0.05,
+            "reported": "--",
+            "time": "bmo"
+        },
+        "SRLP": {
+            "estimate": 0.63,
+            "reported": 0.43,
+            "time": "bmo"
+        },
+        "SURF": {
+            "estimate": -0.57,
+            "reported": "--",
+            "time": "--"
+        },
+        "SYRS": {
+            "estimate": -0.47,
+            "reported": -0.46,
+            "time": "bmo"
+        },
+        "TCRD": {
+            "estimate": 0.21,
+            "reported": 0.16,
+            "time": "amc"
+        },
+        "TECD": {
+            "estimate": 4.79,
+            "reported": 4.88,
+            "time": "bmo"
+        },
+        "TGS": {
+            "estimate": 0.19,
+            "reported": "--",
+            "time": "--"
+        },
+        "TRVI": {
+            "estimate": -0.52,
+            "reported": "--",
+            "time": "--"
+        },
+        "TTC": {
+            "estimate": 0.58,
+            "reported": 0.64,
+            "time": "bmo"
+        },
+        "UFAB": {
+            "estimate": 0.04,
+            "reported": "--",
+            "time": "--"
+        },
+        "UMH": {
+            "estimate": 0.16,
+            "reported": 0.17,
+            "time": "amc"
+        },
+        "UNICY": {
+            "estimate": 0.02,
+            "reported": "--",
+            "time": "--"
+        },
+        "UNT": {
+            "estimate": -0.26,
+            "reported": "--",
+            "time": "--"
+        },
+        "VIE": {
+            "estimate": -0.34,
+            "reported": "--",
+            "time": "--"
+        },
+        "VIPS": {
+            "estimate": 0.29,
+            "reported": 0.41,
+            "time": "bmo"
+        },
+        "VRCA": {
+            "estimate": -0.3,
+            "reported": "--",
+            "time": "--"
+        },
+        "VVNT": {
+            "estimate": -0.68,
+            "reported": "--",
+            "time": "amc"
+        },
+        "WLDN": {
+            "estimate": 0.86,
+            "reported": 0.97,
+            "time": "amc"
+        },
+        "WRTC": {
+            "estimate": -0.09,
+            "reported": "--",
+            "time": "--"
+        },
+        "WUBA": {
+            "estimate": 0.63,
+            "reported": "--",
+            "time": "--"
+        },
+        "XCUR": {
+            "estimate": -0.08,
+            "reported": "--",
+            "time": "--"
+        },
+        "XOG": {
+            "estimate": -0.06,
+            "reported": -0.26,
+            "time": "amc"
+        },
+        "XOMA": {
+            "estimate": -0.27,
+            "reported": "--",
+            "time": "--"
+        }
+    },
+    "2020-03-06": {
+        "ASEKY": {
+            "estimate": 0.31,
+            "reported": "--",
+            "time": "--"
+        },
+        "AVH": {
+            "estimate": 0.21,
+            "reported": "--",
+            "time": "--"
+        },
+        "BPTH": {
+            "estimate": -0.69,
+            "reported": "--",
+            "time": "bmo"
+        },
+        "BXG": {
+            "estimate": 0.18,
+            "reported": "--",
+            "time": "--"
+        },
+        "DNZOY": {
+            "estimate": 0.51,
+            "reported": "--",
+            "time": "--"
+        },
+        "DXPE": {
+            "estimate": 0.61,
+            "reported": "--",
+            "time": "bmo"
+        },
+        "EYEG": {
+            "estimate": -0.81,
+            "reported": -0.76,
+            "time": "--"
+        },
+        "GLP": {
+            "estimate": -0.17,
+            "reported": "--",
+            "time": "bmo"
+        },
+        "GNLN": {
+            "estimate": -0.09,
+            "reported": "--",
+            "time": "--"
+        },
+        "HDB": {
+            "estimate": 0.58,
+            "reported": "--",
+            "time": "--"
+        },
+        "HOCPY": {
+            "estimate": 0.82,
+            "reported": "--",
+            "time": "--"
+        },
+        "HUGE": {
+            "estimate": -1.09,
+            "reported": "--",
+            "time": "--"
+        },
+        "KNCAY": {
+            "estimate": 0.12,
+            "reported": "--",
+            "time": "--"
+        },
+        "SSDOY": {
+            "estimate": 0.14,
+            "reported": "--",
+            "time": "--"
+        },
+        "VET": {
+            "estimate": 0.1,
+            "reported": "--",
+            "time": "bmo"
+        },
+        "YPF": {
+            "estimate": -0.26,
+            "reported": "--",
             "time": "bmo"
         }
     }
